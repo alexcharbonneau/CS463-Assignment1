@@ -6,6 +6,7 @@ package UserInterface;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,8 +21,12 @@ public class UserInterface {
 	private JButton submit;
 	private JLabel instructions;
 	private JTextField fileInputField;
+	private String filename;
+	private File imageFile;
+	
 	
 	public UserInterface() {
+		filename = new String();
 		fileInputField = new JTextField(35);
 		submit = new JButton("OK");
 		instructions = new JLabel("Please enter the image file path");
@@ -40,8 +45,11 @@ public class UserInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!fileInputField.getText().equals(""))
+				if (!fileInputField.getText().equals("")) {
 					instructions.setText("...loading image...");
+					filename = fileInputField.getText();
+					imageFile = new File(filename);
+				}
 			}
 			
 		});
