@@ -74,7 +74,7 @@ public class UserInterface {
 		int width;
 		int colorMode = 255;
 		try {
-			java.util.Scanner scanner = new Scanner(imageFile);	
+			java.util.Scanner scanner = new Scanner(f);	
 			scanner.nextLine(); //ignoring P2 for now
 			width = scanner.nextInt();
 			heigth = scanner.nextInt();
