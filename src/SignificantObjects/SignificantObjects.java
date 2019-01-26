@@ -9,6 +9,8 @@ import java.awt.Point;
 
 public class SignificantObjects {
 
+	int sigsize = 4;
+	
 	public SignificantObjects() {
 		
 	}
@@ -22,22 +24,22 @@ public class SignificantObjects {
 			}
 		}
 		
-		for (int i = 0; i < count.length; i++)	//finding how many objects are significant
-			if (count[i] >= 20)
+		for (int i = 1; i < count.length; i++)	//finding how many objects are significant ignoring zeros
+			if (count[i] >= sigsize)
 				objectCount++;
 		
 		ObjectDetails[] resultList = new ObjectDetails[objectCount];	//building the array which contains the objectdetails
 		
-		for (int i = 0; i < count.length; i++) {
+		for (int i = 1; i < count.length; i++) {
 			int y = 0;
 			int x = 0;
-			if (count[i] >= 20) {
+			if (count[i] >= sigsize) {
 				boolean found = false;
 				int row = 0;
 				int col = 0;
 				//finding what are the starting x and y, top left corner
 				while (!found) {
-					if (A[row][col] == count[i]) {
+					if (A[row][col] == i) {
 						found = true;
 					}
 					else {
@@ -48,12 +50,12 @@ public class SignificantObjects {
 						}
 					}
 				}
-				y = col;
+				y = row;
 				found = false;
 				row = 0;
 				col = 0;
 				while (!found) {
-					if (A[row][col] == count[i]) {
+					if (A[row][col] == i) {
 						found = true;
 					}
 					else {
@@ -64,7 +66,7 @@ public class SignificantObjects {
 						}
 					}
 				}
-				x = row;
+				x = col;
 				found = false;
 			
 				//starting from bottom right to find the other extremity
@@ -76,7 +78,7 @@ public class SignificantObjects {
 				col = A[0].length - 1;
 				
 				while (!found) {
-					if (A[row][col] == count[i]) {
+					if (A[row][col] == i) {
 						found = true;
 					}
 					else {
@@ -95,13 +97,13 @@ public class SignificantObjects {
 				col = A[0].length - 1;
 				
 				while (!found) {
-					if (A[row][col] == count[i]) {
+					if (A[row][col] == i) {
 						found = true;
 					}
 					else {
 						row--;
 						if (row == -1) {
-							row = A[0].length - 1;
+							row = A.length - 1;
 							col--;
 						}
 					}
@@ -109,14 +111,16 @@ public class SignificantObjects {
 				
 				bottomx = col;
 				
-				int[][] pixels = new int[bottomx - x + 1][ bottomy - y + 1];
-				resultList[i] = new ObjectDetails(new Point(x, y), pixels);
-			
-			}
-
-			
+				int[][] pixels = new int[bottomy - y + 1][bottomx - x + 1];
+				resultList[i - 1] = new ObjectDetails(new Point(x, y), pixels);
+				for (int j = 0; j < pixels.length; j++) {
+					for (int k = 0; k < pixels[0].length; k++) {
+						if (A[j+y][k+x] == i)
+							pixels[j][k] = 1;				//maps a binary representation of the object
+					}
+				}
+			}	
 		}
-		
 		
 		return resultList;
 		

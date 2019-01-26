@@ -19,11 +19,8 @@ public class ObjectDetails {
 	private double secondMomentMixed;
 	
 	public ObjectDetails(Point p, int[][] pixels) {
-		if (pixels.length != 0)
-			this.pixels = new int[pixels.length][pixels[0].length];
-		else
-			
-		origin.x = p.x;
-		origin.y = p.y;
+
+		this.pixels = pixels;
+		origin = p;
 	}
 }
