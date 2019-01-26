@@ -44,45 +44,77 @@ public class NoiseFilter {
 		//	 }
 	//	}
 
-			 public void erode(int[][] binaryImageErosion, int[][] erosionStructure){
+	  public void erode(int[][] binaryImageErosion1, int[][] erosionStructure1,int[][] binaryImageErosion2, int[][] erosionStructure2){
 			
 				 
 				
-				 int n = 4;
-				 int m = 5;
+				 int n = 8;
+				 int m = 8;
 				 int[][] erodedImage;
-				 erodedImage = new int [4][5];
+				 erodedImage = new int [8][8];
 				
 				 
 			
-				 for (int i = 0; i<n; i++) {                                 //EROSION USING STRUCTURE1 (from slides)
+//				 for (int i = 0; i<n; i++) {                                 //EROSION USING STRUCTURE1 (from slides)
+//					 for (int j = 0; j<m; j++) {		 
+//						 if ( i+2 < n && erosionStructure1[0][0] == binaryImageErosion1[i][j]  &&  //added array boundary
+//								 erosionStructure1[1][0] == binaryImageErosion1[i+1][j] &&        //origin
+//								 erosionStructure1[2][0] == binaryImageErosion1[i+2][j]) {
+//					
+//							 		erodedImage[i+1][j] = 1;  //set origin to 1
+//						 			}
+//
+//						 else if (i+1<n) {
+//							 	erodedImage[i+1][j] = 0;    //set origin to 0
+//								 
+//						 	  }
+//						 
+//						 else 	
+//							 	erodedImage[i][j] = 0;	
+//						 	System.out.print(erodedImage[i][j]);
+//					 }
+//					 		System.out.println();
+//			
+//				}
+//			
+				 
+				 
+				 
+
+				 for (int i = 0; i<n; i++) {                                 //EROSION USING STRUCTURE2 (from slides)
 					 for (int j = 0; j<m; j++) {		 
-						 if ( i+2 < n && erosionStructure[0][0] == binaryImageErosion[i][j]  &&  //added array boundary
-								 erosionStructure[1][0] == binaryImageErosion[i+1][j] &&        //origin
-								 erosionStructure[2][0] == binaryImageErosion[i+2][j]) {
-					
-							 		erodedImage[i+1][j] = 1;  //set origin to 1
-					 }
-						 
-						 else if (i+1<n) {
-							 	erodedImage[i+1][j] = 0;    //set origin to 0
+						 if ( i+2 < n && j+2 <m && erosionStructure2[0][0] == binaryImageErosion2[i][j]  &&  //added array boundary
+								 erosionStructure2[1][0] == binaryImageErosion2[i+1][j] &&        
+								 erosionStructure2[2][0] == binaryImageErosion2[i+2][j] &&
+								 erosionStructure2[0][1] == binaryImageErosion2[i][j+1] &&
+								 erosionStructure2[1][1] == binaryImageErosion2[i+1][j+1] && //origin
+								 erosionStructure2[2][1] == binaryImageErosion2[i+2][j+1] &&
+								 erosionStructure2[0][2] == binaryImageErosion2[i][j+2] &&
+								 erosionStructure2[1][2] == binaryImageErosion2[i+1][j+2] &&
+								 erosionStructure2[2][2] == binaryImageErosion2[i+2][j+2]) {
 								 
-						 	  }
-						 
-							   else erodedImage[i][j] = 0;
-						 
-						 
+								
+					
+							 		erodedImage[i+1][j+1] = 1;  //set origin to 1
+							 		
+						 			}
+
+						 else if (i+1<n && j+1 <m) {
+							 	erodedImage[i+1][j+1] = 0;    //set origin to 0
+						 }	 
+						 	  						 
+						  	
+					 
 						 	System.out.print(erodedImage[i][j]);
 					 }
 					 		System.out.println();
 			
-		}
-			
-	 }
-			 	
+				 
+			 } 
+				
 		
 
 	}
 			 
-	 
+}
 		 
