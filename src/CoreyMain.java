@@ -48,52 +48,36 @@ public class CoreyMain {
 			{0,0,1,1,0,0,0,0},
 			{0,0,0,0,0,0,0,0},
 		};
+		
+		int[][]binaryImageErosion3;
+		binaryImageErosion3 = new int [13][13];
+			for (int i = 0 ; i<13; i++) {
+				for (int j = 0; j<13; j++) {
+					binaryImageErosion3[i][j] = 1;
+				}
+			}
+				binaryImageErosion3[1][6] = 0;
+				
+		
 			
-		
-		int[][] dilationStructure;
-		dilationStructure = new int [][] {
-			
-			{1},
-			{1},
-			{1,1}
-			
-		};
-		
-		
-		int[][]erosionStructure2;
-		erosionStructure2 = new int [][] {
-			{1,1,1},
-			{1,1,1},
-			{1,1,1}
-		};
-		
-		
-		int[][] erosionStructure1;
-		erosionStructure1 = new int [][] {
-			{1},
-			{1},
-			{1}
-		};
 		
 
 		
-	//	int n = 4;
-	//	int m = 5;
-	//	NoiseFilter erosion = new NoiseFilter();
-	//	erosion.erode(binaryImageErosion1,erosionStructure1, n,m);  //Erosion using line Structure
+
 		
-		
-	//	int n = 8;
-	//	int m = 8;
-	//	NoiseFilter erosion2 = new NoiseFilter();
-	//	erosion2.erode2(binaryImageErosion2, erosionStructure2, n, m); //Erosion using Squarebox Structure on big array
-		
-		
-		int n = 3;
-		int m = 4;
 	
+	//	NoiseFilter erosion = new NoiseFilter();
+	//	erosion.erode(binaryImageErosion1);  //Erosion using line Structure
+		
+		
+
+	//	NoiseFilter erosion2 = new NoiseFilter();
+	//	erosion2.erode2(binaryImageErosion3); //Erosion using Squarebox Structure on big array
+		
+		
+
 		NoiseFilter dilate = new NoiseFilter();
-		dilate.dilate(binaryImageDilation, dilationStructure, n, m);  //Dilation using small array
+		dilate.dilate(binaryImageDilation);  //Dilation using small array
 		
 		
 		
