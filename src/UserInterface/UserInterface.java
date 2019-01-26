@@ -58,7 +58,7 @@ public class UserInterface {
 					imageFile = new File(filename);
 					if (imageFile.exists() == true) {
 						instructions.setText("File loaded successfully!");
-						convertImage();
+						convertImage(imageFile);
 					}
 					else {
 						instructions.setText("File not found");
@@ -69,7 +69,7 @@ public class UserInterface {
 		});
 	}
 	
-	private int[][] convertImage() {
+	public int[][] convertImage(File f) {
 		int heigth;
 		int width;
 		int colorMode = 255;
