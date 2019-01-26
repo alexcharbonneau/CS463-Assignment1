@@ -1,3 +1,5 @@
+import java.io.File;
+
 import UserInterface.UserInterface;
 
 public class AlexMain {
@@ -5,8 +7,10 @@ public class AlexMain {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		UserInterface test = new UserInterface();
-		int[][] A = {{0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}};
-		test.displayMatrix(A, 1);
+		//int[][] A = {{0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}};
+		//test.displayMatrix(A, 1);
+		String path = new String("src\\Resources\\Images\\image1.pgm");
+		int[][] converted = test.convertImage(new File(path));
 	}
 
 }
