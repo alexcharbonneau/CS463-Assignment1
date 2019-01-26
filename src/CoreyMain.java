@@ -1,11 +1,12 @@
 import UserInterface.UserInterface;
+import NoiseFilter.NoiseFilter;
 
 public class CoreyMain {
 
 	public static void main(String[] args) {
 	
 		
-		UserInterface coreyTest = new UserInterface();
+	//	UserInterface coreyTest = new UserInterface();
 		
 		int[][] binaryImageDilation;
 		binaryImageDilation = new int[][]{   //Dilation test array
@@ -19,8 +20,11 @@ public class CoreyMain {
 			{0,0,1,1,0},
 			{0,0,1,1,0},
 			{0,0,1,1,0},
-			{1,1,1,1,1}
+			{1,1,1,1,1},
 		};
+		
+	   int n;
+	   int m;
 		
 		
 		
@@ -40,12 +44,21 @@ public class CoreyMain {
 			{1}
 		};
 		
-		}
+	//	dilate(binaryImageDilation, dilationStructure, n,m);
+		NoiseFilter erosion = new NoiseFilter();
+		erosion.erode(binaryImageErosion,erosionStructure);
+		
+	
 		
 				
+
+		
+	}
+
+		
 	}		
 			
-			
+
 				
 	
 
