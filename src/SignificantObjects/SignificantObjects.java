@@ -8,5 +8,8 @@ public class SignificantObjects {
 	
 	public ObjectDetails[] getObjects(int[][]A) {
 		
+		
+		return null;
+		
 	}
 }

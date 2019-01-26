@@ -1,3 +1,4 @@
+package SignificantObjects;
 /*
  * **************Critical Class, do not modify on a whim!**************************
  * Holds data for each individual object which was found on the main image
