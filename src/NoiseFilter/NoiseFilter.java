@@ -51,11 +51,11 @@ public class NoiseFilter {
 				 int n = 4;
 				 int m = 5;
 				 int[][] erodedImage;
-				 erodedImage = new int [5][5];
+				 erodedImage = new int [4][5];
 				
 				 
 			
-				 for (int i = 0; i<n; i++) {
+				 for (int i = 0; i<n; i++) {                                 //EROSION USING STRUCTURE1 (from slides)
 					 for (int j = 0; j<m; j++) {		 
 						 if ( i+2 < n && erosionStructure[0][0] == binaryImageErosion[i][j]  &&  //added array boundary
 								 erosionStructure[1][0] == binaryImageErosion[i+1][j] &&        //origin
@@ -64,11 +64,14 @@ public class NoiseFilter {
 							 		erodedImage[i+1][j] = 1;  //set origin to 1
 					 }
 						 
-						 else {
-							 
+						 else if (i+1<n) {
 							 	erodedImage[i+1][j] = 0;    //set origin to 0
 								 
 						 	  }
+						 
+							   else erodedImage[i][j] = 0;
+						 
+						 
 						 	System.out.print(erodedImage[i][j]);
 					 }
 					 		System.out.println();
