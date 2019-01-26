@@ -28,17 +28,58 @@ public class NoiseFilter {
 
 		
 		
-		public static void dilate(int[][] binaryImageDilation, int[][] dilationStructure){
+	//	public void dilate(int[][] binaryImageDilation, int[][] dilationStructure, int n, int m){
 			
 			
 			
 			
 			
+		////	 for (int i = 0; i<n; i++) {
+			//	 for (int j = 0; j<m; j++) {
+					 
+										 
+					 
+	//			 }
+				 
+		//	 }
+	//	}
+
+			 public void erode(int[][] binaryImageErosion, int[][] erosionStructure){
 			
+				 
+				
+				 int n = 4;
+				 int m = 5;
+				 int[][] erodedImage;
+				 erodedImage = new int [5][5];
+				
+				 
 			
+				 for (int i = 0; i<n; i++) {
+					 for (int j = 0; j<m; j++) {		 
+						 if ( i+2 < n && erosionStructure[0][0] == binaryImageErosion[i][j]  &&  //added array boundary
+								 erosionStructure[1][0] == binaryImageErosion[i+1][j] &&        //origin
+								 erosionStructure[2][0] == binaryImageErosion[i+2][j]) {
+					
+							 		erodedImage[i+1][j] = 1;  //set origin to 1
+					 }
+						 
+						 else {
+							 
+							 	erodedImage[i+1][j] = 0;    //set origin to 0
+								 
+						 	  }
+						 	System.out.print(erodedImage[i][j]);
+					 }
+					 		System.out.println();
 			
 		}
+			
+	 }
+			 	
+		
 
 	}
-
-
+			 
+	 
+		 
