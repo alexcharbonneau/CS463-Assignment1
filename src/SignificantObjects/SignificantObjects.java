@@ -119,6 +119,7 @@ public class SignificantObjects {
 							pixels[j][k] = 1;				//maps a binary representation of the object
 					}
 				}
+				resultList[i - 1].setArea(count[i]);
 			}	
 		}
 		

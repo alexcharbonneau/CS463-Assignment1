@@ -13,7 +13,7 @@ public class AlexMain {
 		UserInterface test = new UserInterface();
 		//int[][] A = {{0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}, {0,1,1,0,1}};
 		//test.displayMatrix(A, 1);
-		String path = new String("src\\Resources\\Images\\image3.pgm");
+		String path = new String("src\\Resources\\Images\\image1.pgm");
 		int[][] converted = test.convertImage(new File(path));
 
 		test.displayMatrix(Threshold.PGMThreshold(converted, 127), 1);
