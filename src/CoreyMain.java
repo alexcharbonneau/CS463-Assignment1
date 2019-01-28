@@ -58,6 +58,21 @@ public class CoreyMain {
 			}
 				binaryImageErosion3[1][6] = 0;
 				
+				
+				
+		int[][]binaryImageAreaCentroid;
+		binaryImageAreaCentroid = new int[][] {
+			
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,1,1,0,0,0},
+			{0,0,0,1,1,1,1,1},
+			{0,1,1,1,1,1,1,1},
+			{1,1,1,1,1,1,0,0},
+			{0,0,0,1,1,0,0,0},
+			{0,0,0,0,1,0,0,0},
+			{0,0,0,0,0,0,0,0}				
+			
+		};
 		
 			
 		
@@ -76,8 +91,20 @@ public class CoreyMain {
 		
 		
 
-		NoiseFilter dilate = new NoiseFilter();
-		dilate.dilate(binaryImageDilation);  //Dilation using small array
+	//	NoiseFilter dilate = new NoiseFilter();
+	//	dilate.dilate(binaryImageDilation);  //Dilation using small array
+		
+	imageFeatures test = new imageFeatures();
+	
+	
+//	test.area(binaryImageAreaCentroid);
+	
+	int objArea = test.area(binaryImageAreaCentroid);
+	test.centroid(binaryImageAreaCentroid, objArea);
+		
+		
+	
+		
 		
 		
 		
