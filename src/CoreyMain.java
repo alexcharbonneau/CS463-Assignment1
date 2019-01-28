@@ -1,5 +1,6 @@
 import UserInterface.UserInterface;
 import NoiseFilter.NoiseFilter;
+import ImageFeatures.ImageFeatures;
 
 public class CoreyMain {
 
@@ -94,13 +95,14 @@ public class CoreyMain {
 	//	NoiseFilter dilate = new NoiseFilter();
 	//	dilate.dilate(binaryImageDilation);  //Dilation using small array
 		
-	imageFeatures test = new imageFeatures();
+	ImageFeatures test = new ImageFeatures();
 	
 	
 //	test.area(binaryImageAreaCentroid);
 	
 	int objArea = test.area(binaryImageAreaCentroid);
-	test.centroid(binaryImageAreaCentroid, objArea);
+	test.r(binaryImageAreaCentroid, objArea);
+	test.c(binaryImageAreaCentroid, objArea);
 		
 		
 	
