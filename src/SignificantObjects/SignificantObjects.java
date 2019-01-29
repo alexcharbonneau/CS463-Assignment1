@@ -9,7 +9,7 @@ import java.awt.Point;
 
 public class SignificantObjects {
 
-	int sigsize = 4;
+	int sigsize = 20;
 	
 	public SignificantObjects() {
 		
@@ -30,6 +30,7 @@ public class SignificantObjects {
 		
 		ObjectDetails[] resultList = new ObjectDetails[objectCount];	//building the array which contains the objectdetails
 		
+		int listPos = 0;
 		for (int i = 1; i < count.length; i++) {
 			int y = 0;
 			int x = 0;
@@ -112,14 +113,15 @@ public class SignificantObjects {
 				bottomx = col;
 				
 				int[][] pixels = new int[bottomy - y + 1][bottomx - x + 1];
-				resultList[i - 1] = new ObjectDetails(new Point(x, y), pixels);
+				resultList[listPos] = new ObjectDetails(new Point(x, y), pixels);
 				for (int j = 0; j < pixels.length; j++) {
 					for (int k = 0; k < pixels[0].length; k++) {
 						if (A[j+y][k+x] == i)
 							pixels[j][k] = 1;				//maps a binary representation of the object
 					}
 				}
-				resultList[i - 1].setArea(count[i]);
+				resultList[listPos].setArea(count[i]);
+				listPos++;
 			}	
 		}
 		
