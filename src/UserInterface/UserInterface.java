@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 
 public class UserInterface {
 	
+	public enum ColorMode {GRAYSCALE, BINARY, LABELS, COLOR, GROUPS};
 	
 	private JFrame mainWindow;
 	private JPanel mainPanel;
@@ -72,13 +73,13 @@ public class UserInterface {
 	public int[][] convertImage(File f) {
 		int heigth;
 		int width;
-		int colorMode = 255;
+		int ColorModeFromFile = 0;
 		try {
 			java.util.Scanner scanner = new Scanner(f);	
 			scanner.nextLine(); //ignoring P2 for now
 			width = scanner.nextInt();
 			heigth = scanner.nextInt();
-			colorMode = scanner.nextInt();
+			ColorModeFromFile = scanner.nextInt();
 			convertedMatrix = new int[heigth][width];
 			for (int i = 0; i < heigth; i++) {
 				for (int j = 0; j < width; j++) {
@@ -95,7 +96,7 @@ public class UserInterface {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		displayMatrix(convertedMatrix, colorMode);
+		displayMatrix(convertedMatrix, ColorMode.GRAYSCALE);
 		return convertedMatrix;
 	}
 	
@@ -106,14 +107,14 @@ public class UserInterface {
 	 * grayscale will shade the image with the appropriate grey ranging from 0-255 from the int found in the matrix
 	 * */
 	
-	public void displayMatrix(int[][]A, int colorMode) {
+	public void displayMatrix(int[][]A, ColorMode mode) {
 		if (drawingBoard != null) {
 			mainPanel.remove(drawingBoard);
 		}
 		drawingBoard = new MyJPanel();
 		mainPanel.add(drawingBoard, BorderLayout.SOUTH);
 		drawingBoard.setA(A);
-		drawingBoard.setMode(colorMode);
+		drawingBoard.setMode(mode);
 		mainWindow.repaint();
 		mainWindow.pack();
 	}
