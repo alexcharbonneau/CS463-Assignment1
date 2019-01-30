@@ -12,7 +12,7 @@ public class LeeMain {
 		int[][] convertedImage = test.convertImage(new File("src/resources/images/image5.pgm")).clone();
 		Threshold threshold = new Threshold();
 		int[][] binaryImage = threshold.PGMThreshold(convertedImage, 127).clone();
-		test.displayMatrix(binaryImage, 1);
+		//test.displayMatrix(binaryImage, 1);
 		
 	}
 }

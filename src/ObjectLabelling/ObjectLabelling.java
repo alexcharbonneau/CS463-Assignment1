@@ -2,6 +2,13 @@ package ObjectLabelling;
 
 import java.util.Arrays;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.*;
+import java.util.*;
+import java.io.BufferedWriter;
+
 public class ObjectLabelling {
 
 	public static int[][] countGroups(int[][] m) {
@@ -11,7 +18,7 @@ public class ObjectLabelling {
 	    int col = m[0].length;
 	    int eCorners = 0;
 	    int iCorners = 0;
-	    int numObjects = 0;
+	    double numObjects = 0;
 	    int labelCount = 0;
 	    
 	    for (int i=0; i<m.length-1; i++) {
@@ -49,7 +56,7 @@ public class ObjectLabelling {
 	    
 //	    System.out.println(eCorners);
 //	    System.out.println(iCorners);
-//	    System.out.print(numObjects);
+//	    System.out.println("Number of objects = " + numObjects);
 
 	    //turning 1's in the array into -1's
 	    for(int i=0; i<m.length; i++) {
@@ -61,9 +68,11 @@ public class ObjectLabelling {
 	    }
 
 	    FindComponents(m, labelCount);
-	    UnionFind(m);
-	    PrintArray(m);
-    
+//	    UnionFind4n(m);
+	    UnionFind8n(m);
+//	    PrintArray(m);
+	    CountLabels(m);
+//	    FileOutputter(m);
 	    return m;
 	    
 	}
@@ -96,7 +105,7 @@ public class ObjectLabelling {
 		}
 	}
 	
-	public static void UnionFind(int[][]x) {
+	public static void UnionFind4n(int[][]x) {
 		for(int i=0; i<x.length; i++) {
 			for(int j=0;j<x[0].length; j++) {
 				if(x[i][j]!=0) {
@@ -130,6 +139,92 @@ public class ObjectLabelling {
 		}
 	}
 	
+	public static void UnionFind8n(int[][]x) {
+		for(int i=0; i<x.length; i++) {
+			for(int j=0;j<x[0].length; j++) {
+				if(x[i][j]!=0) {
+					if(i>0) {
+						if(x[i-1][j]<x[i][j] && x[i-1][j]!=0) {
+							int lower = x[i-1][j];
+							int higher = x[i][j];
+							reLabel(x, lower, higher);
+						}
+						if(x[i-1][j]>x[i][j] && x[i-1][j]!=0) {
+							int lower = x[i][j];
+							int higher = x[i-1][j];
+							reLabel(x, lower, higher);
+						}
+						
+					}
+					if(j>0) {
+						if(x[i][j-1]<x[i][j] && x[i][j-1]!=0) {
+							int lower = x[i][j-1];
+							int higher = x[i][j];
+							reLabel(x, lower, higher);
+						}
+						if(x[i][j-1]>x[i][j] && x[i][j-1]!=0) {
+							int lower = x[i][j];
+							int higher = x[i][j-1];
+							reLabel(x, lower, higher);
+						}
+					}
+					if(i>0 && j>0) {
+						if(x[i-1][j-1]<x[i][j] && x[i-1][j-1]!=0) {
+							int lower = x[i-1][j-1];
+							int higher = x[i][j];
+							reLabel(x, lower, higher);
+						}
+						if(x[i-1][j-1]>x[i][j] && x[i-1][j-1]!=0) {
+							int lower = x[i][j];
+							int higher = x[i-1][j-1];
+							reLabel(x, lower, higher);
+						}
+					}
+					if(i>0 && j<x[0].length-1) {
+						if(x[i-1][j+1]<x[i][j] && x[i-1][j+1]!=0) {
+							int lower = x[i-1][j+1];
+							int higher = x[i][j];
+							reLabel(x, lower, higher);
+						}
+						if(x[i-1][j+1]>x[i][j] && x[i-1][j+1]!=0) {
+							int lower = x[i][j];
+							int higher = x[i-1][j+1];
+							reLabel(x, lower, higher);
+						}
+					}
+					if(i<x.length-1 && j>0) {
+						if(x[i+1][j-1]<x[i][j] && x[i+1][j-1]!=0) {
+							int lower = x[i+1][j-1];
+							int higher = x[i][j];
+							reLabel(x, lower, higher);
+						}
+						if(x[i+1][j-1]>x[i][j] && x[i+1][j-1]!=0) {
+							int lower = x[i][j];
+							int higher = x[i+1][j-1];
+							reLabel(x, lower, higher);
+						}
+					}
+					if(i<x.length-1 && j<x[0].length-1) {
+						if(x[i+1][j+1]<x[i][j] && x[i+1][j+1]!=0) {
+							int lower = x[i+1][j+1];
+							int higher = x[i][j];
+							reLabel(x, lower, higher);
+						}
+						if(x[i+1][j+1]>x[i][j] && x[i+1][j+1]!=0) {
+							int lower = x[i][j];
+							int higher = x[i+1][j+1];
+							reLabel(x, lower, higher);
+						}
+					}
+				}
+
+			}
+		}
+	}
+	
+	
+
+	
 	public static void reLabel(int[][]x, int lower, int higher) {
 		for(int i=0; i<x.length; i++) {
 			for(int j=0;j<x[0].length; j++) {
@@ -140,56 +235,55 @@ public class ObjectLabelling {
 		}
 	}
 	
-//    public static void FindComponents(int[][]x, int y) {
-//    	for(int i=0; i<x.length; i++) {
-//    		for(int j=0; j<x[0].length; j++) {
-//    			if(x[i][j]==-1) {
-//    				x[i][j]=y;
-//    				ConnectedComponents(x, i, j);
-//    				y++;
-//    			}
-//    		
-//    		}
-//    	}
-//    	PrintArray(x);
-//    }
-//    
-//    public static void ConnectedComponents(int[][]x, int i, int j) {
-//    	if(i>0) {
-//    		if(x[i-1][j]!=0) {
-//    			x[i-1][j]=x[i][j];
-//    		}
-//    	}
-//    	
-//       	if(j>0) {
-//    		if(x[i][j-1]!=0) {
-//    			x[i][j-1]=x[i][j];
-//    		}
-//    	}
-//       	
-//    	if(i<x.length-1) {
-//    		if(x[i+1][j]<0) {
-//    			x[i+1][j]=x[i][j];
-//    		}
-//    	}
-//    	
-//    	
-//    	if(j<x[0].length-1) {
-//    		if(x[i][j+1]<0) {
-//    			x[i][j+1]=x[i][j];
-//    		}
-//    	}
-//    	
-//    	if(i<x.length-1 && x[i+1][j]>0) {
-//    		ConnectedComponents(x, i+1, j);
-//    	}
-//    	
-//    	if(j<x[0].length-1 && x[i][j+1]>0) {
-//    		ConnectedComponents(x, i, j+1);
-//    	}
-//    	
-//
-//    }
+	public static void CountLabels(int[][]x) {
+		int count =0;
+		for (int labelNum=1; labelNum<500; labelNum++) {
+			for (int i=0; i<x.length; i++){
+				for(int j=0;j<x[0].length;j++) {
+					if (x[i][j]==labelNum) {
+						count++;
+						labelNum++;
+					}
+				}	
+			}
+		}
+
+		System.out.print("Number of different objects = " + count);
+	}
+	
+	public static void FileOutputter(int[][]m){
+	    try {
+	    	
+	        StringBuilder content = new StringBuilder();
+	        
+	        for(int i=0; i<m.length; i++) {
+				for(int j=0;j<m[0].length; j++) {
+					content.append(" ");
+					content.append(m[i][j]);
+				}
+				content.append("\n");
+	        }
+	        String strI = content.toString();
+	        File file = new File("/users/Tyler/bird.txt");
+
+	        // if file doesnt exists, then create it
+	        if (!file.exists()) {
+	            file.createNewFile();
+	        }
+
+	        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+	        BufferedWriter bw = new BufferedWriter(fw);
+	        bw.write(strI);
+	        bw.close();
+
+	        System.out.println("Done");
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+
     
     public static void PrintArray(int[][]m) {
     	for(int i=0; i<m.length; i++) {
