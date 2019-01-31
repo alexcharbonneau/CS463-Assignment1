@@ -29,24 +29,24 @@ public class TylerMain {
 		
 		
 		UserInterface test5 = new UserInterface();
-		int[][] testArray = test5.convertImage(new File("/Users/Tyler/git/CS463-Assignment1/bin/Resources/Images/image3.pgm"));
+		int[][] testArray = test5.convertImage(new File("/Users/Tyler/git/CS463-Assignment1/bin/Resources/Images/image1.pgm"));
 		Threshold threshold = new Threshold();
-		testArray=threshold.PGMThreshold(testArray, 127);
+		testArray=threshold.PGMThreshold(testArray, 150);
 		
 		NoiseFilter dilate = new NoiseFilter();
 		NoiseFilter erode = new NoiseFilter();
 		
 		testArray = NoiseFilter.dilate(testArray);
 		testArray = NoiseFilter.erode(testArray);
-
+		
 		
 		ObjectLabelling tester = new ObjectLabelling();
 		tester.countGroups(testArray);
-		test5.displayMatrix(testArray, UserInterface.ColorMode.BINARY);
+		test5.displayMatrix(testArray, UserInterface.ColorMode.LABELS);
 		
-		//SignificantObjects sig = new SignificantObjects();
-		//ObjectDetails obd[] = sig.getObjects(testArray);
-		
+		SignificantObjects sig = new SignificantObjects();
+		ObjectDetails obd[] = sig.getObjects(testArray);
+		System.out.println();
 	}
 
 }

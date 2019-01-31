@@ -70,9 +70,11 @@ public class ObjectLabelling {
 	    FindComponents(m, labelCount);
 //	    UnionFind4n(m);
 	    UnionFind8n(m);
-//	    PrintArray(m);
+
+
+	    CorrectLabels(m);
 	    CountLabels(m);
-//	    FileOutputter(m);
+//	    PrintArray(m);
 	    return m;
 	    
 	}
@@ -235,6 +237,8 @@ public class ObjectLabelling {
 		}
 	}
 	
+	
+	
 	public static void CountLabels(int[][]x) {
 		int count =0;
 		for (int labelNum=1; labelNum<500; labelNum++) {
@@ -249,6 +253,22 @@ public class ObjectLabelling {
 		}
 
 		System.out.print("Number of different objects = " + count);
+	}
+	
+	public static void CorrectLabels(int[][]m) {
+		ArrayList<Integer> numbers = new ArrayList<Integer>();
+		int label = 1;
+		for (int i=0; i<m.length;i++) {
+			for (int j=0; j<m[0].length; j++) {
+				if(m[i][j]!=0) {
+					label=m[i][j];
+					if(!numbers.contains(label)) {
+						numbers.add(label);
+					}
+					m[i][j]=(numbers.indexOf(label)+1);
+				}	
+			}
+		}
 	}
 	
 	public static void FileOutputter(int[][]m){
