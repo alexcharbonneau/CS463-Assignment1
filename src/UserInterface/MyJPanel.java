@@ -3,6 +3,7 @@ package UserInterface;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -10,19 +11,51 @@ public class MyJPanel extends JPanel{
 
 	private int[][] A;
 	private int colorMode;
+	private ArrayList<Integer>labels;
+	private Color[] colors = new Color[10];
+	public MyJPanel() {
+		labels = new ArrayList<Integer>();
+	}
 	
 	public void setA(int[][]A) {
 		this.A = A;
 		this.setPreferredSize(new Dimension(A[0].length, A.length));
+		for (int i = 0; i < A.length; i++) {
+			for (int j = 0; j < A[0].length; j++) {
+				if (!labels.contains(A[i][j])){
+					labels.add(A[i][j]);
+				}
+			}
+		}
+		colors[0] = Color.WHITE;
+		colors[1] = Color.RED;
+		colors[2] = Color.BLUE;
+		colors[3] = Color.ORANGE;
+		colors[4] = Color.GREEN;
+		colors[5] = Color.MAGENTA;
+		colors[6] = Color.GRAY;
+		colors[7] = Color.BLACK;
+		colors[8] = Color.YELLOW;
+		colors[9] = Color.PINK;
+				
 	}
 	
-	public void setMode(int m) {
-		colorMode = m;
+	public void setMode(UserInterface.ColorMode m) {
+		if (m == UserInterface.ColorMode.COLOR)
+			colorMode = 5;
+		if (m == UserInterface.ColorMode.BINARY)
+			colorMode = 2;
+		if (m == UserInterface.ColorMode.GRAYSCALE)
+			colorMode = 1;
+		if (m == UserInterface.ColorMode.GROUPS)
+			colorMode = 4;
+		if (m == UserInterface.ColorMode.LABELS)
+			colorMode = 3;
 	}
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		if (colorMode == 255) {
+		if (colorMode == 1) {	//grayscale
 			for (int i = 0; i < A[0].length; i++) {
 				for (int j = 0; j < A.length; j++) {
 					g.setColor(new Color(A[j][i], A[j][i], A[j][i]));
@@ -30,7 +63,7 @@ public class MyJPanel extends JPanel{
 				}
 			}
 		}
-		else if (colorMode == 1) { //binary
+		else if (colorMode == 2) { //binary
 			for (int i = 0; i < A[0].length; i++) {
 				for (int j = 0; j < A.length; j++) {
 					if (A[j][i] != 0) {
@@ -39,6 +72,14 @@ public class MyJPanel extends JPanel{
 					}
 					else
 						g.setColor(Color.WHITE);
+					g.drawLine(i, j, i, j);
+				}
+			}
+		}
+		else if (colorMode == 3) {	//labels
+			for (int i = 0; i < A[0].length; i++) {
+				for (int j = 0; j < A.length; j++) {
+					g.setColor(colors[labels.indexOf(A[j][i]) % 8]);
 					g.drawLine(i, j, i, j);
 				}
 			}
