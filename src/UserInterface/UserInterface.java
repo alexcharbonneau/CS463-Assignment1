@@ -24,6 +24,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import NoiseFilter.NoiseFilter;
 import ObjectLabelling.ObjectLabelling;
 import Threshold.Threshold;
 
@@ -34,8 +35,6 @@ public class UserInterface {
 	
 	private ColorMode toDisplay;
 	
-	
-	
 	private JFrame mainWindow;
 	private JPanel mainPanel;
 	private MyJPanel drawingBoard;
@@ -45,10 +44,12 @@ public class UserInterface {
 	private JTextField fileInputField;
 	private String filename;
 	private File imageFile;
+	
 	private int[][] convertedMatrix;	//the original matrix acquired from the image file
 	private int[][] binaryMatrix;
 	private int[][] filteredMatrix;
 	private int[][] connectedMatrix;
+	
 	private Toolkit tk;
 	private Dimension screensize;
 	private JSlider JSThreshold;
@@ -74,9 +75,11 @@ public class UserInterface {
 		JButtonErode2 = new JButton("Erode 2");
 		JButtonDilate = new JButton("Dilate");
 		JButtonOriginal = new JButton("Original");
+		JButtonOriginal.setEnabled(false);
 		JButtonBinary = new JButton("Binary");
 		JButtonLabels = new JButton("Labels");
 		JButtonGroup = new JButton("Group");
+		JButtonGroup.setEnabled(false);
 		JButtonReport = new JButton("Report");
 		
 		JLgrayScaleThreshold = new JLabel("Grayscale Threshold");
@@ -139,6 +142,80 @@ public class UserInterface {
 		mainPanel.add(topLineArea, BorderLayout.PAGE_START);
 		mainPanel.add(buttonArea, BorderLayout.LINE_END);
 		
+		
+		JButtonErode1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if (JButtonDilate.isEnabled())
+					filteredMatrix = NoiseFilter.erode(binaryMatrix);
+				else
+					filteredMatrix = NoiseFilter.erode(filteredMatrix);
+				
+				JButtonErode1.setEnabled(false);
+				JButtonErode2.setEnabled(false);
+				
+				for (int i = 0; i < filteredMatrix.length; i++) {
+					for (int j = 0; j < filteredMatrix[0].length; j++) {
+						connectedMatrix[i][j] = filteredMatrix[i][j];
+					}
+				}
+				connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+				if (toDisplay == ColorMode.BINARY)
+					displayMatrix(filteredMatrix, toDisplay);
+				if (toDisplay == ColorMode.LABELS)
+					displayMatrix(connectedMatrix, toDisplay);
+			}
+		});
+		
+		JButtonErode2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (JButtonDilate.isEnabled())
+					filteredMatrix = NoiseFilter.erode2(binaryMatrix);
+				else
+					filteredMatrix = NoiseFilter.erode2(filteredMatrix);
+				
+				JButtonErode1.setEnabled(false);
+				JButtonErode2.setEnabled(false);
+				
+				for (int i = 0; i < filteredMatrix.length; i++) {
+					for (int j = 0; j < filteredMatrix[0].length; j++) {
+						connectedMatrix[i][j] = filteredMatrix[i][j];
+					}
+				}
+				connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+				if (toDisplay == ColorMode.BINARY)
+					displayMatrix(filteredMatrix, toDisplay);
+				if (toDisplay == ColorMode.LABELS)
+					displayMatrix(connectedMatrix, toDisplay);
+			}
+		});
+		
+		
+		JButtonDilate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (JButtonErode1.isEnabled())
+					filteredMatrix = NoiseFilter.dilate(binaryMatrix);
+				else
+					filteredMatrix = NoiseFilter.dilate(filteredMatrix);
+				JButtonDilate.setEnabled(false);
+				
+				for (int i = 0; i < filteredMatrix.length; i++) {
+					for (int j = 0; j < filteredMatrix[0].length; j++) {
+						connectedMatrix[i][j] = filteredMatrix[i][j];
+					}
+				}
+				connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+				if (toDisplay == ColorMode.BINARY)
+					displayMatrix(filteredMatrix, toDisplay);
+			}
+		});
+		
 		JButtonBinary.addActionListener(new ActionListener() {
 			
 			@Override
@@ -190,11 +267,19 @@ public class UserInterface {
 					imageFile = new File(filename);
 					if (imageFile.exists() == true) {
 						JLinstructions.setText("File loaded successfully!");
+						toDisplay = ColorMode.GRAYSCALE;
 						convertImage(imageFile);
 					}
 					else {
 						JLinstructions.setText("File not found");
 					}
+					JButtonOriginal.setEnabled(false);
+					JButtonGroup.setEnabled(true);
+					JButtonLabels.setEnabled(true);
+					JButtonBinary.setEnabled(true);
+					JButtonDilate.setEnabled(true);
+					JButtonErode1.setEnabled(true);
+					JButtonErode2.setEnabled(true);
 				}
 			}
 			
@@ -216,11 +301,7 @@ public class UserInterface {
 				if (toDisplay == ColorMode.BINARY)
 					displayMatrix(binaryMatrix, toDisplay);
 				
-				for (int i = 0; i < binaryMatrix.length; i++) {
-					for (int j = 0; j < binaryMatrix[0].length; j++) {
-						filteredMatrix[i][j] = binaryMatrix[i][j];
-					}
-				}
+				
 				for (int i = 0; i < binaryMatrix.length; i++) {
 					for (int j = 0; j < binaryMatrix[0].length; j++) {
 						connectedMatrix[i][j] = binaryMatrix[i][j];
@@ -293,9 +374,24 @@ public class UserInterface {
 				binaryMatrix[i][j] = convertedMatrix[i][j];
 			}
 		}
+		
 		displayMatrix(convertedMatrix, toDisplay);
+		
 		binaryMatrix = Threshold.PGMThreshold(binaryMatrix, JSThreshold.getValue());
-		connectedMatrix = ObjectLabelling.countGroups(binaryMatrix);
+		for (int i = 0; i < binaryMatrix.length; i++) {
+			for (int j = 0; j < binaryMatrix[0].length; j++) {
+				connectedMatrix[i][j] = binaryMatrix[i][j];
+			}
+		}
+		connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+		
+		for (int i = 0; i < convertedMatrix.length; i++) {
+			for (int j = 0; j < convertedMatrix[0].length; j++) {
+				binaryMatrix[i][j] = convertedMatrix[i][j];
+			}
+		}
+		
+		binaryMatrix = Threshold.PGMThreshold(binaryMatrix, JSThreshold.getValue());
 		return convertedMatrix;
 	}
 	
