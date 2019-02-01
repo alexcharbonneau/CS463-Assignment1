@@ -79,7 +79,7 @@ public class ImageFeatures {
 			
 	}
 			
-			public static double c(int[][] binaryImageAreaCentroid, double objArea) { 
+			public static double c(int[][] binaryImageAreaCentroid, double objArea) {    //centroid (_,c)
 				
 				int rows = 0;
 				int columns = 0;
