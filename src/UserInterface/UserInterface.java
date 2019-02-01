@@ -50,6 +50,10 @@ public class UserInterface {
 	private int[][] filteredMatrix;
 	private int[][] connectedMatrix;
 	
+	private int erode1count = 0;
+	private int erode2count = 0; 
+	private int dilatecount = 0;
+	
 	private Toolkit tk;
 	private Dimension screensize;
 	private JSlider JSThreshold;
@@ -71,9 +75,9 @@ public class UserInterface {
 		fileInputField = new JTextField(40);
 		fileInputField.setText("src\\Resources\\Images\\image3.pgm");
 		submit = new JButton("OK");
-		JButtonErode1 = new JButton("Erode 1");
-		JButtonErode2 = new JButton("Erode 2");
-		JButtonDilate = new JButton("Dilate");
+		JButtonErode1 = new JButton("Erode 1 x" + erode1count);
+		JButtonErode2 = new JButton("Erode 2 x" + erode2count);
+		JButtonDilate = new JButton("Dilate x" + dilatecount);
 		JButtonOriginal = new JButton("Original");
 		JButtonOriginal.setEnabled(false);
 		JButtonBinary = new JButton("Binary");
@@ -149,13 +153,7 @@ public class UserInterface {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (JButtonDilate.isEnabled())
-					filteredMatrix = NoiseFilter.erode(binaryMatrix);
-				else
 					filteredMatrix = NoiseFilter.erode(filteredMatrix);
-				
-				JButtonErode1.setEnabled(false);
-				JButtonErode2.setEnabled(false);
-				
 				for (int i = 0; i < filteredMatrix.length; i++) {
 					for (int j = 0; j < filteredMatrix[0].length; j++) {
 						connectedMatrix[i][j] = filteredMatrix[i][j];
@@ -166,6 +164,8 @@ public class UserInterface {
 					displayMatrix(filteredMatrix, toDisplay);
 				if (toDisplay == ColorMode.LABELS)
 					displayMatrix(connectedMatrix, toDisplay);
+				erode1count++;
+				JButtonErode1.setText("Erode 1 x" + erode1count);
 			}
 		});
 		
@@ -173,14 +173,9 @@ public class UserInterface {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (JButtonDilate.isEnabled())
-					filteredMatrix = NoiseFilter.erode2(binaryMatrix);
-				else
-					filteredMatrix = NoiseFilter.erode2(filteredMatrix);
-				
-				JButtonErode1.setEnabled(false);
-				JButtonErode2.setEnabled(false);
-				
+
+				filteredMatrix = NoiseFilter.erode2(filteredMatrix);
+
 				for (int i = 0; i < filteredMatrix.length; i++) {
 					for (int j = 0; j < filteredMatrix[0].length; j++) {
 						connectedMatrix[i][j] = filteredMatrix[i][j];
@@ -191,6 +186,8 @@ public class UserInterface {
 					displayMatrix(filteredMatrix, toDisplay);
 				if (toDisplay == ColorMode.LABELS)
 					displayMatrix(connectedMatrix, toDisplay);
+				erode2count++;
+				JButtonErode2.setText("Erode 2 x" + erode2count);
 			}
 		});
 		
@@ -199,11 +196,8 @@ public class UserInterface {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (JButtonErode1.isEnabled())
-					filteredMatrix = NoiseFilter.dilate(binaryMatrix);
-				else
-					filteredMatrix = NoiseFilter.dilate(filteredMatrix);
-				JButtonDilate.setEnabled(false);
+
+				filteredMatrix = NoiseFilter.dilate(filteredMatrix);
 				
 				for (int i = 0; i < filteredMatrix.length; i++) {
 					for (int j = 0; j < filteredMatrix[0].length; j++) {
@@ -213,6 +207,10 @@ public class UserInterface {
 				connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
 				if (toDisplay == ColorMode.BINARY)
 					displayMatrix(filteredMatrix, toDisplay);
+				if (toDisplay == ColorMode.LABELS)
+					displayMatrix(connectedMatrix, toDisplay);
+				dilatecount++;
+				JButtonDilate.setText("Dilate x" + dilatecount);
 			}
 		});
 		
@@ -225,7 +223,7 @@ public class UserInterface {
 				JButtonGroup.setEnabled(true);
 				JButtonLabels.setEnabled(true);
 				JButtonOriginal.setEnabled(true);
-				displayMatrix(binaryMatrix, toDisplay);
+				displayMatrix(filteredMatrix, toDisplay);
 			}
 		});
 		
@@ -280,6 +278,7 @@ public class UserInterface {
 					JButtonDilate.setEnabled(true);
 					JButtonErode1.setEnabled(true);
 					JButtonErode2.setEnabled(true);
+					JSThreshold.setValue(127);
 				}
 			}
 			
@@ -301,15 +300,21 @@ public class UserInterface {
 				if (toDisplay == ColorMode.BINARY)
 					displayMatrix(binaryMatrix, toDisplay);
 				
-				
 				for (int i = 0; i < binaryMatrix.length; i++) {
 					for (int j = 0; j < binaryMatrix[0].length; j++) {
 						connectedMatrix[i][j] = binaryMatrix[i][j];
+						filteredMatrix[i][j] = binaryMatrix[i][j];
 					}
 				}
 				connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
 				if (toDisplay == ColorMode.LABELS)
 					displayMatrix(connectedMatrix, toDisplay);
+				erode1count = 0;
+				erode2count = 0;
+				dilatecount = 0;
+				JButtonErode1.setText("Erode 1 x" + erode1count);
+				JButtonErode2.setText("Erode 2 x" + erode2count);
+				JButtonBinary.setText("Dilate x" + dilatecount);
 			}
 		});
 		
@@ -381,17 +386,11 @@ public class UserInterface {
 		for (int i = 0; i < binaryMatrix.length; i++) {
 			for (int j = 0; j < binaryMatrix[0].length; j++) {
 				connectedMatrix[i][j] = binaryMatrix[i][j];
+				filteredMatrix[i][j] = binaryMatrix[i][j];
 			}
 		}
 		connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
 		
-		for (int i = 0; i < convertedMatrix.length; i++) {
-			for (int j = 0; j < convertedMatrix[0].length; j++) {
-				binaryMatrix[i][j] = convertedMatrix[i][j];
-			}
-		}
-		
-		binaryMatrix = Threshold.PGMThreshold(binaryMatrix, JSThreshold.getValue());
 		return convertedMatrix;
 	}
 	
