@@ -27,7 +27,6 @@ public class MyJPanel extends JPanel{
 				}
 			}
 		}
-		colors[0] = Color.WHITE;
 		colors[1] = Color.RED;
 		colors[2] = Color.BLUE;
 		colors[3] = Color.ORANGE;
@@ -36,7 +35,7 @@ public class MyJPanel extends JPanel{
 		colors[6] = Color.GRAY;
 		colors[7] = Color.BLACK;
 		colors[8] = Color.YELLOW;
-		colors[9] = Color.PINK;
+		colors[0] = Color.PINK;
 				
 	}
 	
@@ -79,7 +78,10 @@ public class MyJPanel extends JPanel{
 		else if (colorMode == 3) {	//labels
 			for (int i = 0; i < A[0].length; i++) {
 				for (int j = 0; j < A.length; j++) {
-					g.setColor(colors[labels.indexOf(A[j][i]) % 8]);
+					if (A[j][i] == 0)
+						g.setColor(Color.WHITE);
+					else
+						g.setColor(colors[labels.indexOf(A[j][i]) % 8]);
 					g.drawLine(i, j, i, j);
 				}
 			}
