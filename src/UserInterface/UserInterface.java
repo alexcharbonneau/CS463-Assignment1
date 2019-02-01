@@ -4,6 +4,9 @@
 
 package UserInterface;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -24,17 +27,27 @@ public class UserInterface {
 	private JFrame mainWindow;
 	private JPanel mainPanel;
 	private MyJPanel drawingBoard;
+	private JPanel fileLoadArea, topLineArea, holder1, holder2, holder3, holder4;
 	private JButton submit;
 	private JLabel instructions;
 	private JTextField fileInputField;
 	private String filename;
 	private File imageFile;
 	private int[][] convertedMatrix;
-	
+	private Toolkit tk;
+	private Dimension screensize;
 	
 	public UserInterface() {
+		tk = Toolkit.getDefaultToolkit();
+		screensize = tk.getScreenSize();
+	
+		holder1 = new JPanel();
+		holder2 = new JPanel();
+		holder3 = new JPanel();
+		holder4 = new JPanel();
+		
 		filename = new String();
-		fileInputField = new JTextField(35);
+		fileInputField = new JTextField(40);
 		submit = new JButton("OK");
 		instructions = new JLabel("Please enter the image file path");
 		mainWindow = new JFrame();
@@ -43,11 +56,26 @@ public class UserInterface {
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainWindow.setVisible(true);
 		mainWindow.add(mainPanel);
+		mainWindow.setMaximumSize(screensize);
+		mainWindow.setMinimumSize(new Dimension((int)(screensize.getWidth()-100), (int)(screensize.getHeight()-100)));
 		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(instructions, BorderLayout.PAGE_START);
-		mainPanel.add(fileInputField, BorderLayout.WEST);
-		mainPanel.add(submit, BorderLayout.EAST);
-		mainWindow.pack();
+		
+		topLineArea = new JPanel();
+		topLineArea.setLayout(new GridLayout(1, 5));
+		fileLoadArea = new JPanel();
+		fileLoadArea.setLayout(new BorderLayout());
+		
+		fileLoadArea.add(instructions, BorderLayout.PAGE_START);
+		fileLoadArea.add(fileInputField, BorderLayout.LINE_START);
+		fileLoadArea.add(submit, BorderLayout.LINE_END);
+		
+		topLineArea.add(fileLoadArea);
+		topLineArea.add(holder1);
+		topLineArea.add(holder2);
+		topLineArea.add(holder3);
+		mainPanel.add(topLineArea, BorderLayout.PAGE_START);
+		
+		
 		submit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -80,11 +108,34 @@ public class UserInterface {
 			width = scanner.nextInt();
 			heigth = scanner.nextInt();
 			ColorModeFromFile = scanner.nextInt();
-			convertedMatrix = new int[heigth][width];
-			for (int i = 0; i < heigth; i++) {
-				for (int j = 0; j < width; j++) {
-					if (scanner.hasNext() == true)
+			
+			double ratiow = width / screensize.width + 1.5;
+			double ratioh = heigth / screensize.height + 1.5;
+			
+			int ratioWRounded = (int) ratiow;
+			int ratioHRounded = (int) ratioh;
+			
+			convertedMatrix = new int[heigth / ratioHRounded][width / ratioWRounded];
+			for (int i = 0; i < convertedMatrix.length; i ++) {
+				for (int j = 0; j <convertedMatrix[0].length; j ++) {
+					if (scanner.hasNext()) {
 						convertedMatrix[i][j] = scanner.nextInt();
+						if (scanner.hasNext()) {
+							for (int k = 1; (k < ratioWRounded); k++)
+								scanner.next();
+							if (j == convertedMatrix[0].length - 1 && width % convertedMatrix[0].length != 0 && convertedMatrix[0].length < width) {
+								for (int l = 0; l < width % convertedMatrix[0].length; l++) //getting rid of the extra input for the row
+									if (scanner.hasNext())
+										scanner.next();
+								for (int l = 1; l < ratioHRounded; l++) { //getting rid of the extra rows. NOTE: apparently they are all written on a single line
+									for (int m = 0; m < width; m++)
+										if (scanner.hasNext()) {
+											scanner.next();
+										}
+								}
+							}
+						}
+					}
 					else {
 						instructions.setText("This image file is not of a supported format");
 						break;
@@ -112,7 +163,7 @@ public class UserInterface {
 			mainPanel.remove(drawingBoard);
 		}
 		drawingBoard = new MyJPanel();
-		mainPanel.add(drawingBoard, BorderLayout.SOUTH);
+		mainPanel.add(drawingBoard, BorderLayout.CENTER);
 		drawingBoard.setA(A);
 		drawingBoard.setMode(mode);
 		mainWindow.repaint();
