@@ -31,7 +31,7 @@ public class NoiseFilter {
 
 	 		for (int i = 0; i<rows; i++) {                                 //dilate using structure
 	 				for (int j = 0; j<columns; j++) {		 
-	 					if ( i+2 < rows && dilationStructure[1][0] == binaryImageDilation[i+1][j]) {
+	 					if ( i+1 < rows && j+1 < columns && dilationStructure[1][0] == binaryImageDilation[i+1][j]) {
 	 							dilatedImage[i][j] = 1;
 	 							dilatedImage[i+1][j] = 1;
 	 							dilatedImage[i+1][j+1] = 1;		
@@ -42,9 +42,9 @@ public class NoiseFilter {
 	 							}				
 	 											
 	 				
-	 				//	System.out.print(dilatedImage[i][j]);
+	 				
 	 				}    	
-	 				//	System.out.println();
+	 				
 	 			}
 	 		
 	 		return dilatedImage;
@@ -88,9 +88,9 @@ public class NoiseFilter {
 								 
 						 	  }
 						 
-						// 	System.out.print(erodedImage[i][j]);
+						
 					 }
-					// 		System.out.println();
+				
 				 }	
 				 return erodedImage;
 				}
@@ -140,9 +140,9 @@ public class NoiseFilter {
 						 	  						 
 						  	
 					 
-					//	 	System.out.print(erodedImage[i][j]);
+					
 					 }
-					 //		System.out.println();
+					 
 			
 				 
 			 } 
