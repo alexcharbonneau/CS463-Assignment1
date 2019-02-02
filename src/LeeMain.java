@@ -9,10 +9,14 @@ public class LeeMain {
 	//testing purpose only (hardcoded)
 	public static void main(String[] args) {
 		UserInterface test = new UserInterface();
-		int[][] convertedImage = test.convertImage(new File("src/resources/images/image5.pgm")).clone();
+		int[][] convertedImage = test.convertImage(new File("src/resources/images/image3.pgm")).clone();
 		Threshold threshold = new Threshold();
-		int[][] binaryImage = threshold.PGMThreshold(convertedImage, 127).clone();
-		//test.displayMatrix(binaryImage, 1);
 		
+		System.out.println("Hello");
+
+		System.out.println(threshold.automaticThreshold(convertedImage));
+		System.out.println();
+
+				
 	}
 }
