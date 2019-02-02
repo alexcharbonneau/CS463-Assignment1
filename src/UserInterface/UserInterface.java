@@ -5,6 +5,7 @@
 package UserInterface;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -74,7 +75,9 @@ public class UserInterface {
 		filename = new String();
 		fileInputField = new JTextField(40);
 		fileInputField.setText("src\\Resources\\Images\\image3.pgm");
+		
 		submit = new JButton("OK");
+		submit.setPreferredSize(new Dimension(60, 30));
 		JButtonErode1 = new JButton("Erode 1 x" + erode1count);
 		JButtonErode2 = new JButton("Erode 2 x" + erode2count);
 		JButtonDilate = new JButton("Dilate x" + dilatecount);
@@ -127,22 +130,19 @@ public class UserInterface {
 		mainWindow.setVisible(true);
 		mainWindow.add(mainPanel);
 		mainWindow.setMaximumSize(screensize);
-		mainWindow.setMinimumSize(new Dimension((int)(screensize.getWidth()-100), (int)(screensize.getHeight()-100)));
+		mainWindow.setMinimumSize(new Dimension(700, 700));
 		mainPanel.setLayout(new BorderLayout());
 		
 		topLineArea = new JPanel();
-		topLineArea.setLayout(new GridLayout(1, 5));
+
 		fileLoadArea = new JPanel();
-		fileLoadArea.setLayout(new BorderLayout());
 		
-		fileLoadArea.add(JLinstructions, BorderLayout.PAGE_START);
-		fileLoadArea.add(fileInputField, BorderLayout.LINE_START);
-		fileLoadArea.add(submit, BorderLayout.LINE_END);
-		
+		fileLoadArea.add(fileInputField);
+		fileLoadArea.add(submit);
+	
+		topLineArea.add(JLinstructions);
 		topLineArea.add(fileLoadArea);
-		topLineArea.add(holder1);
-		topLineArea.add(holder2);
-		topLineArea.add(holder3);
+
 		mainPanel.add(topLineArea, BorderLayout.PAGE_START);
 		mainPanel.add(buttonArea, BorderLayout.LINE_END);
 		
@@ -314,7 +314,7 @@ public class UserInterface {
 				dilatecount = 0;
 				JButtonErode1.setText("Erode 1 x" + erode1count);
 				JButtonErode2.setText("Erode 2 x" + erode2count);
-				JButtonBinary.setText("Dilate x" + dilatecount);
+				JButtonDilate.setText("Dilate x" + dilatecount);
 			}
 		});
 		

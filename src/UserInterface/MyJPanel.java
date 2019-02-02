@@ -27,15 +27,15 @@ public class MyJPanel extends JPanel{
 				}
 			}
 		}
-		colors[1] = Color.RED;
+		colors[1] = Color.BLACK;
 		colors[2] = Color.BLUE;
 		colors[3] = Color.ORANGE;
 		colors[4] = Color.GREEN;
 		colors[5] = Color.MAGENTA;
 		colors[6] = Color.GRAY;
-		colors[7] = Color.BLACK;
-		colors[8] = Color.YELLOW;
-		colors[0] = Color.PINK;
+		colors[7] = Color.YELLOW;
+		colors[8] = Color.PINK;
+		colors[0] = Color.RED;
 				
 	}
 	
