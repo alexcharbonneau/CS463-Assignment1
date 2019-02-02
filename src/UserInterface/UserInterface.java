@@ -5,7 +5,6 @@
 package UserInterface;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -13,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Hashtable;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -41,7 +41,7 @@ public class UserInterface {
 	private MyJPanel drawingBoard;
 	private JPanel fileLoadArea, topLineArea, holder1, holder2, holder3, buttonArea;
 	private JButton submit, JButtonErode1, JButtonErode2, JButtonDilate, JButtonOriginal, JButtonBinary, JButtonLabels, JButtonGroup, JButtonReport;
-	private JLabel JLinstructions, JLgrayScaleThreshold, JLview, JLnoiseFilter, JLreports;
+	private JLabel JLinstructions, JLgrayScaleThreshold, JLview, JLnoiseFilter, JLreports, JLslidervalue;
 	private JTextField fileInputField;
 	private String filename;
 	private File imageFile;
@@ -89,7 +89,7 @@ public class UserInterface {
 		JButtonGroup.setEnabled(false);
 		JButtonReport = new JButton("Report");
 		
-		JLgrayScaleThreshold = new JLabel("Grayscale Threshold");
+		JLgrayScaleThreshold = new JLabel("Threshold Value: ");
 		JLgrayScaleThreshold.setHorizontalAlignment(SwingConstants.CENTER);
 		JLview = new JLabel("Views");
 		JLview.setHorizontalAlignment(SwingConstants.CENTER);
@@ -97,9 +97,19 @@ public class UserInterface {
 		JLnoiseFilter.setHorizontalAlignment(SwingConstants.CENTER);
 		JLreports = new JLabel("Reports");
 		JLreports.setHorizontalAlignment(SwingConstants.CENTER);
+		JLslidervalue = new JLabel();
 		
 		JSThreshold = new JSlider(0, 255, 127);
 		JSThreshold.setValue(127);
+		Hashtable<Integer, JLabel> labelTable = new Hashtable();
+		labelTable.put(0, new JLabel("0"));
+		labelTable.put(255, new JLabel("255"));
+		JSThreshold.setLabelTable(labelTable);
+		JSThreshold.setMajorTickSpacing(255/2);
+		JSThreshold.setMinorTickSpacing(255/15);
+		JSThreshold.setPaintTicks(true);
+		JSThreshold.setPaintLabels(true);
+		
 		
 		JLview.setFont(new Font("arial black", Font.BOLD, 20));
 		JLnoiseFilter.setFont(new Font("arial black", Font.BOLD, 20));
@@ -278,7 +288,6 @@ public class UserInterface {
 					JButtonDilate.setEnabled(true);
 					JButtonErode1.setEnabled(true);
 					JButtonErode2.setEnabled(true);
-					JSThreshold.setValue(127);
 				}
 			}
 			
@@ -288,33 +297,36 @@ public class UserInterface {
 			
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				JSlider source = (JSlider)e.getSource();
-				for (int i = 0; i < convertedMatrix.length; i++) {
-					for (int j = 0; j < convertedMatrix[0].length; j++) {
-						binaryMatrix[i][j] = convertedMatrix[i][j];
+				if (convertedMatrix != null) {
+					JSlider source = (JSlider)e.getSource();
+					for (int i = 0; i < convertedMatrix.length; i++) {
+						for (int j = 0; j < convertedMatrix[0].length; j++) {
+							binaryMatrix[i][j] = convertedMatrix[i][j];
+						}
 					}
-				}
-				
-				binaryMatrix = Threshold.PGMThreshold(binaryMatrix, source.getValue());
-				
-				if (toDisplay == ColorMode.BINARY)
-					displayMatrix(binaryMatrix, toDisplay);
-				
-				for (int i = 0; i < binaryMatrix.length; i++) {
-					for (int j = 0; j < binaryMatrix[0].length; j++) {
-						connectedMatrix[i][j] = binaryMatrix[i][j];
-						filteredMatrix[i][j] = binaryMatrix[i][j];
+					
+					binaryMatrix = Threshold.PGMThreshold(binaryMatrix, source.getValue());
+					
+					if (toDisplay == ColorMode.BINARY)
+						displayMatrix(binaryMatrix, toDisplay);
+					
+					for (int i = 0; i < binaryMatrix.length; i++) {
+						for (int j = 0; j < binaryMatrix[0].length; j++) {
+							connectedMatrix[i][j] = binaryMatrix[i][j];
+							filteredMatrix[i][j] = binaryMatrix[i][j];
+						}
 					}
+					connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+					if (toDisplay == ColorMode.LABELS)
+						displayMatrix(connectedMatrix, toDisplay);
+					erode1count = 0;
+					erode2count = 0;
+					dilatecount = 0;
+					JButtonErode1.setText("Erode 1 x" + erode1count);
+					JButtonErode2.setText("Erode 2 x" + erode2count);
+					JButtonDilate.setText("Dilate x" + dilatecount);
+					JLgrayScaleThreshold.setText("Threshold Value: " + JSThreshold.getValue());
 				}
-				connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
-				if (toDisplay == ColorMode.LABELS)
-					displayMatrix(connectedMatrix, toDisplay);
-				erode1count = 0;
-				erode2count = 0;
-				dilatecount = 0;
-				JButtonErode1.setText("Erode 1 x" + erode1count);
-				JButtonErode2.setText("Erode 2 x" + erode2count);
-				JButtonDilate.setText("Dilate x" + dilatecount);
 			}
 		});
 		
@@ -380,9 +392,19 @@ public class UserInterface {
 			}
 		}
 		
-		displayMatrix(convertedMatrix, toDisplay);
 		
+		Threshold t = new Threshold();
+		JSThreshold.setValue(t.automaticThreshold(binaryMatrix));
+		
+		for (int i = 0; i < convertedMatrix.length; i++) {
+			for (int j = 0; j < convertedMatrix[0].length; j++) {
+				binaryMatrix[i][j] = convertedMatrix[i][j];
+			}
+		}
+		
+		JLgrayScaleThreshold.setText("Threshold Value: " + JSThreshold.getValue());
 		binaryMatrix = Threshold.PGMThreshold(binaryMatrix, JSThreshold.getValue());
+		
 		for (int i = 0; i < binaryMatrix.length; i++) {
 			for (int j = 0; j < binaryMatrix[0].length; j++) {
 				connectedMatrix[i][j] = binaryMatrix[i][j];
@@ -390,7 +412,7 @@ public class UserInterface {
 			}
 		}
 		connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
-		
+		displayMatrix(convertedMatrix, toDisplay);
 		return convertedMatrix;
 	}
 	
