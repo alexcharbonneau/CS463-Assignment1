@@ -12,10 +12,7 @@ public class LeeMain {
 		int[][] convertedImage = test.convertImage(new File("src/resources/images/image3.pgm")).clone();
 		Threshold threshold = new Threshold();
 		
-		System.out.println("Hello");
-
 		System.out.println(threshold.automaticThreshold(convertedImage));
-		System.out.println();
 
 				
 	}
