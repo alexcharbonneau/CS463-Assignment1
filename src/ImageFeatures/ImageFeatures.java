@@ -1,6 +1,7 @@
 package ImageFeatures;
 
 
+
 public class ImageFeatures {
 	
 	
@@ -21,9 +22,6 @@ public class ImageFeatures {
 				 		if (binaryImageAreaCentroid[i][j] == 1) {
 				 			area ++;
 				 		}
-				 		
-	
-	
 	
 
 }
@@ -234,6 +232,10 @@ public class ImageFeatures {
 				
 				return perimeter;
 			}
+			
+		public static double circularity(double perimeter, int area) {
+			return Math.pow(perimeter,2) / area;
+		}
 				  
 	
 		public static void main (String[] args) {
