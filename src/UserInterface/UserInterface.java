@@ -396,7 +396,7 @@ public class UserInterface {
 				}
 			}
 			
-			mainWindow.setPreferredSize(new Dimension(convertedMatrix[0].length + 100, screensize.height - 100));
+			mainWindow.setPreferredSize(new Dimension(convertedMatrix[0].length + 100 + buttonArea.getSize().width, screensize.height - 100));
 			scanner.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
