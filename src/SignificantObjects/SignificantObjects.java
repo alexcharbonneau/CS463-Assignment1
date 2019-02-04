@@ -112,10 +112,10 @@ public class SignificantObjects {
 				
 				bottomx = col;
 				
-				int[][] pixels = new int[bottomy - y + 1][bottomx - x + 1];
+				int[][] pixels = new int[bottomy - y + 1 + 2][bottomx - x + 1 + 2];	//adding a padding of zeros around the object, hence the +2
 				resultList[listPos] = new ObjectDetails(new Point(x, y), pixels);
-				for (int j = 0; j < pixels.length; j++) {
-					for (int k = 0; k < pixels[0].length; k++) {
+				for (int j = 1; j < pixels.length; j++) {							//starting row and col 1 so that zeros can be padded around it
+					for (int k = 1; k < pixels[0].length; k++) {
 						if (A[j+y][k+x] == i)
 							pixels[j][k] = 1;				//maps a binary representation of the object
 					}

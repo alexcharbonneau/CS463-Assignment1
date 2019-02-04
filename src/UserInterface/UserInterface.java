@@ -27,6 +27,8 @@ import javax.swing.event.ChangeListener;
 
 import NoiseFilter.NoiseFilter;
 import ObjectLabelling.ObjectLabelling;
+import SignificantObjects.ObjectDetails;
+import SignificantObjects.SignificantObjects;
 import Threshold.Threshold;
 
 
@@ -50,6 +52,8 @@ public class UserInterface {
 	private int[][] binaryMatrix;
 	private int[][] filteredMatrix;
 	private int[][] connectedMatrix;
+	
+	private ObjectDetails[] objectList;
 	
 	private int erode1count = 0;
 	private int erode2count = 0; 
@@ -412,6 +416,8 @@ public class UserInterface {
 			}
 		}
 		connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+		SignificantObjects s = new SignificantObjects();
+		objectList = s.getObjects(connectedMatrix);
 		displayMatrix(convertedMatrix, toDisplay);
 		return convertedMatrix;
 	}
