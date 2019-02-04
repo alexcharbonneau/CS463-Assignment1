@@ -25,6 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ImageFeatures.ImageFeatures;
 import NoiseFilter.NoiseFilter;
 import ObjectLabelling.ObjectLabelling;
 import SignificantObjects.ObjectDetails;
@@ -143,9 +144,10 @@ public class UserInterface {
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainWindow.setVisible(true);
 		mainWindow.add(mainPanel);
-		mainWindow.setMaximumSize(screensize);
-		mainWindow.setMinimumSize(new Dimension(700, 700));
+		mainWindow.setMaximumSize(new Dimension(screensize.width - 10, screensize.height - 10));
+		mainWindow.setPreferredSize(new Dimension(700, 700));
 		mainPanel.setLayout(new BorderLayout());
+		mainWindow.pack();
 		
 		topLineArea = new JPanel();
 
@@ -238,6 +240,7 @@ public class UserInterface {
 				JButtonLabels.setEnabled(true);
 				JButtonOriginal.setEnabled(true);
 				displayMatrix(filteredMatrix, toDisplay);
+				mainWindow.pack();
 			}
 		});
 		
@@ -251,6 +254,7 @@ public class UserInterface {
 				JButtonOriginal.setEnabled(false);
 				toDisplay = ColorMode.GRAYSCALE;
 				displayMatrix(convertedMatrix, toDisplay);
+				mainWindow.pack();
 			}
 		});
 		
@@ -264,6 +268,7 @@ public class UserInterface {
 				JButtonOriginal.setEnabled(true);
 				toDisplay = ColorMode.LABELS;
 				displayMatrix(connectedMatrix, toDisplay);
+				mainWindow.pack();
 			}
 		});
 		
@@ -354,23 +359,30 @@ public class UserInterface {
 			int ratioWRounded = (int) ratiow;
 			int ratioHRounded = (int) ratioh;
 			
-			convertedMatrix = new int[heigth / ratioHRounded][width / ratioWRounded];
-			binaryMatrix = new int[heigth / ratioHRounded][width / ratioWRounded];
-			filteredMatrix = new int[heigth / ratioHRounded][width / ratioWRounded];
-			connectedMatrix = new int[heigth / ratioHRounded][width / ratioWRounded];
+			int biggestRatio;
+			
+			if (ratioWRounded > ratioHRounded)
+				biggestRatio = ratioWRounded;
+			else
+				biggestRatio = ratioHRounded;
+			
+			convertedMatrix = new int[heigth / biggestRatio][width / biggestRatio];
+			binaryMatrix = new int[heigth / biggestRatio][width / biggestRatio];
+			filteredMatrix = new int[heigth / biggestRatio][width / biggestRatio];
+			connectedMatrix = new int[heigth / biggestRatio][width / biggestRatio];
 			
 			for (int i = 0; i < convertedMatrix.length; i ++) {
 				for (int j = 0; j <convertedMatrix[0].length; j ++) {
 					if (scanner.hasNext()) {
 						convertedMatrix[i][j] = scanner.nextInt();
 						if (scanner.hasNext()) {
-							for (int k = 1; (k < ratioWRounded); k++)
+							for (int k = 1; (k < biggestRatio); k++)
 								scanner.next();
 							if (j == convertedMatrix[0].length - 1 && width % convertedMatrix[0].length != 0 && convertedMatrix[0].length < width) {
 								for (int l = 0; l < width % convertedMatrix[0].length; l++) //getting rid of the extra input for the row
 									if (scanner.hasNext())
 										scanner.next();
-								for (int l = 1; l < ratioHRounded; l++) { //getting rid of the extra rows. NOTE: apparently they are all written on a single line
+								for (int l = 1; l < biggestRatio; l++) { //getting rid of the extra rows. NOTE: apparently they are all written on a single line
 									for (int m = 0; m < width; m++)
 										if (scanner.hasNext()) {
 											scanner.next();
@@ -418,6 +430,11 @@ public class UserInterface {
 		connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
 		SignificantObjects s = new SignificantObjects();
 		objectList = s.getObjects(connectedMatrix);
+		/*
+		for (int i = 0; i < objectList.length; i++) {
+			objectList[i].setCircularity(ImageFeatures.circularity(ImageFeatures.n4PerimeterLength(objectList[i].getPixelMap()),objectList[i].getArea()));
+		}*/
+		
 		displayMatrix(convertedMatrix, toDisplay);
 		return convertedMatrix;
 	}

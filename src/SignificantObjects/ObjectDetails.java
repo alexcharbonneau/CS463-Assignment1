@@ -68,4 +68,40 @@ public class ObjectDetails {
 	public int getBoundingBoxCols() {
 		return boundingBoxCols;
 	}
+	
+	public void setSecondMomentsRow(double s) {
+		secondMomentRow = s;
+	}
+	
+	public void setSecondMomentsCol(double s) {
+		secondMomentCol = s;
+	}
+	
+	public void setSecondMomentsMixed(double s) {
+		secondMomentMixed = s;
+	}
+	
+	public double getSecondMomentsRow() {
+		return secondMomentRow;
+	}
+	
+	public double getSecondMomentsCol() {
+		return secondMomentCol;
+	}
+	
+	public double getSecondMomentsMixed() {
+		return secondMomentMixed;
+	}
+	
+	
+	
+	@Override
+	public String toString() {
+		return ("Object: "+ ((Object)this).hashCode()
+				+ "Bounding Box" + this.boundingBoxRows + " Rows, " + this.boundingBoxCols + " Columns.\n"
+				+ "Area: " + this.area + " pixels.\n"
+				+ "Perimeter: " + this.perimeter + " pixels.\n"
+				+ "Circularity: " + this.circularity + "\n"
+				+ "Second Moments Mixed: " + this.secondMomentMixed + "\n");
+	}
 }
