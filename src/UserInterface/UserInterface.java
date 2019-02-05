@@ -103,6 +103,10 @@ public class UserInterface {
 		JButtonGroup.setEnabled(false);
 		JButtonReport = new JButton("Report");
 		JButtonReport.setEnabled(false);
+		JButtonErode1.setEnabled(false);
+		JButtonErode2.setEnabled(false);
+		JButtonDilate.setEnabled(false);
+		
 		
 		JLgrayScaleThreshold = new JLabel("Threshold Value: ");
 		JLgrayScaleThreshold.setHorizontalAlignment(SwingConstants.CENTER);
@@ -416,6 +420,9 @@ public class UserInterface {
 					}
 				}
 			}
+			JButtonErode1.setEnabled(true);
+			JButtonErode2.setEnabled(true);
+			JButtonDilate.setEnabled(true);
 			mainWindow.setMinimumSize(new Dimension (700, 700));
 			mainWindow.setMaximumSize(new Dimension(screensize.width - 50, screensize.height - 50));
 			mainWindow.setPreferredSize(new Dimension(convertedMatrix[0].length + 100 + buttonArea.getSize().width, screensize.height - 100));
