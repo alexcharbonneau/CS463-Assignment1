@@ -15,3 +15,5 @@ p2
 src\UserInterface\testMatrix.txt
 
 src\Resources\Images\image3.pgm
+
+1280*800

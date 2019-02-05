@@ -3,6 +3,8 @@
  **/
 
 package UserInterface;
+import static java.nio.file.StandardOpenOption.CREATE;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -10,8 +12,14 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Hashtable;
 import java.util.Scanner;
 
@@ -27,6 +35,8 @@ import javax.swing.event.ChangeListener;
 
 import NoiseFilter.NoiseFilter;
 import ObjectLabelling.ObjectLabelling;
+import SignificantObjects.ObjectDetails;
+import SignificantObjects.SignificantObjects;
 import Threshold.Threshold;
 
 
@@ -51,6 +61,8 @@ public class UserInterface {
 	private int[][] filteredMatrix;
 	private int[][] connectedMatrix;
 	
+	private ObjectDetails[] objectList;
+	
 	private int erode1count = 0;
 	private int erode2count = 0; 
 	private int dilatecount = 0;
@@ -74,7 +86,8 @@ public class UserInterface {
 		
 		filename = new String();
 		fileInputField = new JTextField(40);
-		fileInputField.setText("src\\Resources\\Images\\image3.pgm");
+		fileInputField.setText("src\\Resources\\Images\\image1.pgm");
+		
 		
 		submit = new JButton("OK");
 		submit.setPreferredSize(new Dimension(60, 30));
@@ -88,6 +101,7 @@ public class UserInterface {
 		JButtonGroup = new JButton("Group");
 		JButtonGroup.setEnabled(false);
 		JButtonReport = new JButton("Report");
+		JButtonReport.setEnabled(false);
 		
 		JLgrayScaleThreshold = new JLabel("Threshold Value: ");
 		JLgrayScaleThreshold.setHorizontalAlignment(SwingConstants.CENTER);
@@ -139,9 +153,10 @@ public class UserInterface {
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainWindow.setVisible(true);
 		mainWindow.add(mainPanel);
-		mainWindow.setMaximumSize(screensize);
-		mainWindow.setMinimumSize(new Dimension(700, 700));
+		mainWindow.setMaximumSize(new Dimension(screensize.width - 10, screensize.height - 10));
+		mainWindow.setPreferredSize(new Dimension(700, 700));
 		mainPanel.setLayout(new BorderLayout());
+		mainWindow.pack();
 		
 		topLineArea = new JPanel();
 
@@ -263,6 +278,17 @@ public class UserInterface {
 			}
 		});
 		
+		JButtonReport.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Number of objects: " + objectList.length + "\n");
+				for (int i = 0; i < objectList.length; i++) {
+					System.out.println(objectList[i].toString());
+				}
+				
+			}
+		});
 		
 		submit.addActionListener(new ActionListener() {
 			@Override
@@ -350,23 +376,31 @@ public class UserInterface {
 			int ratioWRounded = (int) ratiow;
 			int ratioHRounded = (int) ratioh;
 			
-			convertedMatrix = new int[heigth / ratioHRounded][width / ratioWRounded];
-			binaryMatrix = new int[heigth / ratioHRounded][width / ratioWRounded];
-			filteredMatrix = new int[heigth / ratioHRounded][width / ratioWRounded];
-			connectedMatrix = new int[heigth / ratioHRounded][width / ratioWRounded];
+			int biggestRatio;
+			
+			if (ratioWRounded > ratioHRounded)
+				biggestRatio = ratioWRounded;
+			else
+				biggestRatio = ratioHRounded;
+			
+			convertedMatrix = new int[heigth / biggestRatio][width / biggestRatio];
+			binaryMatrix = new int[heigth / biggestRatio][width / biggestRatio];
+			filteredMatrix = new int[heigth / biggestRatio][width / biggestRatio];
+			connectedMatrix = new int[heigth / biggestRatio][width / biggestRatio];
 			
 			for (int i = 0; i < convertedMatrix.length; i ++) {
-				for (int j = 0; j <convertedMatrix[0].length; j ++) {
+				for (int j = 0; j < convertedMatrix[0].length; j ++) {
 					if (scanner.hasNext()) {
 						convertedMatrix[i][j] = scanner.nextInt();
 						if (scanner.hasNext()) {
-							for (int k = 1; (k < ratioWRounded); k++)
+							for (int k = 1; (k < biggestRatio); k++)
 								scanner.next();
-							if (j == convertedMatrix[0].length - 1 && width % convertedMatrix[0].length != 0 && convertedMatrix[0].length < width) {
+							//&& width % convertedMatrix[0].length != 0
+							if (j == convertedMatrix[0].length - 1  && convertedMatrix[0].length < width) {
 								for (int l = 0; l < width % convertedMatrix[0].length; l++) //getting rid of the extra input for the row
 									if (scanner.hasNext())
 										scanner.next();
-								for (int l = 1; l < ratioHRounded; l++) { //getting rid of the extra rows. NOTE: apparently they are all written on a single line
+								for (int l = 1; l < biggestRatio; l++) { //getting rid of the extra rows. NOTE: apparently they are all written on a single line
 									for (int m = 0; m < width; m++)
 										if (scanner.hasNext()) {
 											scanner.next();
@@ -381,6 +415,9 @@ public class UserInterface {
 					}
 				}
 			}
+			mainWindow.setMinimumSize(new Dimension (700, 700));
+			mainWindow.setMaximumSize(new Dimension(screensize.width - 50, screensize.height - 50));
+			mainWindow.setPreferredSize(new Dimension(convertedMatrix[0].length + 100 + buttonArea.getSize().width, screensize.height - 100));
 			scanner.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -412,16 +449,21 @@ public class UserInterface {
 			}
 		}
 		connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+		SignificantObjects s = new SignificantObjects();
+		objectList = s.getObjects(connectedMatrix);
+		if (objectList.length > 0)
+			JButtonReport.setEnabled(true);
+		/*
+		for (int i = 0; i < objectList.length; i++) {
+			objectList[i].setCircularity(ImageFeatures.circularity(ImageFeatures.n4PerimeterLength(objectList[i].getPixelMap()),objectList[i].getArea()));
+		}
+		*/
+		
+		mainWindow.pack();
 		displayMatrix(convertedMatrix, toDisplay);
 		return convertedMatrix;
 	}
 	
-	/*
-	 * 2 color modes supported right now: binary and grayscale256
-	 * binary image must use colorMode parameter: 1
-	 * 		any non zero int found will be colored black, the rest will be white
-	 * grayscale will shade the image with the appropriate grey ranging from 0-255 from the int found in the matrix
-	 * */
 	
 	public void displayMatrix(int[][]A, ColorMode mode) {
 		if (drawingBoard != null) {
