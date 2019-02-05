@@ -27,6 +27,13 @@ public class SignificantObjects {
 		for (int i = 1; i < count.length; i++)	//finding how many objects are significant ignoring zeros
 			if (count[i] >= sigsize)
 				objectCount++;
+			else	//deleting objects which are too small
+				for (int j = 0; j < A.length; j++) {
+					for (int k = 0; k < A[0].length; k++) {
+						if (A[j][k] == i)
+							A[j][k] = 0;
+					}
+				}
 		
 		ObjectDetails[] resultList = new ObjectDetails[objectCount];	//building the array which contains the objectdetails
 		

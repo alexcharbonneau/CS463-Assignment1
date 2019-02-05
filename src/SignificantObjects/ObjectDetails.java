@@ -20,7 +20,7 @@ public class ObjectDetails {
 	private double secondMomentRow;
 	private double secondMomentCol;
 	private double secondMomentMixed;
-	private int group;
+	private int group = 0;
 	
 	public int getGroup() {
 		return group;
@@ -111,6 +111,7 @@ public class ObjectDetails {
 				+ "Area: " + this.area + " pixels.\n"
 				+ "Perimeter: " + this.perimeter + " pixels.\n"
 				+ "Circularity: " + this.circularity + "\n"
-				+ "Second Moments Mixed: " + this.secondMomentMixed + "\n");
+				+ "Second Moments Mixed: " + this.secondMomentMixed + "\n"
+				+ "Group number: " + group + "\n");
 	}
 }

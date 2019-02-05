@@ -102,13 +102,31 @@ public class MyJPanel extends JPanel implements MouseListener{
 			}
 		}
 		else if (colorMode == 4) {	//groups
+			ObjectDetails[] obj = registeredUI.getObjectDetails();
 			for (int i = 0; i < A[0].length; i++) {
 				for (int j = 0; j < A.length; j++) {
-					if (A[j][i] == 0)
+					if (A[j][i] == 0) {
 						g.setColor(Color.WHITE);
-					else
-						g.setColor(colors[labels.indexOf(A[j][i]) % 8]);
-					g.drawLine(i, j, i, j);
+						g.drawLine(i, j, i, j);
+					}
+				}
+			}
+			for (int k = 0; k < obj.length; k++) {
+				for (int i = 0; i < obj[k].getPixelMap()[0].length; i++) {
+					for (int j = 0; j < obj[k].getPixelMap().length; j++) {
+						if (obj[k].getPixelMap()[j][i] != 0) {
+							g.setColor(colors[obj[k].getGroup() % 8]);
+							g.drawLine(obj[k].getOrigin().x + i,obj[k].getOrigin().y + j, obj[k].getOrigin().x + i, obj[k].getOrigin().y + j);
+						}
+					}
+				}
+			}
+			if (clickedObject != null) {
+				for (int i = 0; i < obj.length; i++) {
+					if (clickedObject.getGroup() == obj[i].getGroup()) {
+						g.setColor(Color.BLACK);
+						g.drawRect(obj[i].getOrigin().x, obj[i].getOrigin().y, obj[i].getPixelMap()[0].length-2, obj[i].getPixelMap().length-2);
+					}
 				}
 			}
 		}

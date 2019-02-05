@@ -184,8 +184,7 @@ public class UserInterface {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if (JButtonDilate.isEnabled())
-					filteredMatrix = NoiseFilter.erode(filteredMatrix);
+				filteredMatrix = NoiseFilter.erode(filteredMatrix);
 				for (int i = 0; i < filteredMatrix.length; i++) {
 					for (int j = 0; j < filteredMatrix[0].length; j++) {
 						connectedMatrix[i][j] = filteredMatrix[i][j];
@@ -195,6 +194,8 @@ public class UserInterface {
 				if (toDisplay == ColorMode.BINARY)
 					displayMatrix(filteredMatrix, toDisplay);
 				if (toDisplay == ColorMode.LABELS)
+					displayMatrix(connectedMatrix, toDisplay);
+				if (toDisplay == ColorMode.GROUPS)
 					displayMatrix(connectedMatrix, toDisplay);
 				erode1count++;
 				JButtonErode1.setText("Erode 1 x" + erode1count);
@@ -218,6 +219,8 @@ public class UserInterface {
 					displayMatrix(filteredMatrix, toDisplay);
 				if (toDisplay == ColorMode.LABELS)
 					displayMatrix(connectedMatrix, toDisplay);
+				if (toDisplay == ColorMode.GROUPS)
+					displayMatrix(connectedMatrix, toDisplay);
 				erode2count++;
 				JButtonErode2.setText("Erode 2 x" + erode2count);
 			}
@@ -240,6 +243,8 @@ public class UserInterface {
 				if (toDisplay == ColorMode.BINARY)
 					displayMatrix(filteredMatrix, toDisplay);
 				if (toDisplay == ColorMode.LABELS)
+					displayMatrix(connectedMatrix, toDisplay);
+				if (toDisplay == ColorMode.GROUPS)
 					displayMatrix(connectedMatrix, toDisplay);
 				dilatecount++;
 				JButtonDilate.setText("Dilate x" + dilatecount);
@@ -281,6 +286,19 @@ public class UserInterface {
 				JButtonLabels.setEnabled(false);
 				JButtonOriginal.setEnabled(true);
 				toDisplay = ColorMode.LABELS;
+				displayMatrix(connectedMatrix, toDisplay);
+			}
+		});
+		
+		JButtonGroup.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JButtonBinary.setEnabled(true);
+				JButtonGroup.setEnabled(false);
+				JButtonLabels.setEnabled(true);
+				JButtonOriginal.setEnabled(true);
+				toDisplay = ColorMode.GROUPS;
 				displayMatrix(connectedMatrix, toDisplay);
 			}
 		});
@@ -403,7 +421,6 @@ public class UserInterface {
 						if (scanner.hasNext()) {
 							for (int k = 1; (k < biggestRatio); k++)
 								scanner.next();
-							//&& width % convertedMatrix[0].length != 0
 							if (j == convertedMatrix[0].length - 1  && convertedMatrix[0].length < width) {
 								for (int l = 0; l < width % convertedMatrix[0].length; l++) //getting rid of the extra input for the row
 									if (scanner.hasNext())
