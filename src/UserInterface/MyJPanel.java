@@ -3,18 +3,29 @@ package UserInterface;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class MyJPanel extends JPanel{
+import SignificantObjects.ObjectDetails;
+
+public class MyJPanel extends JPanel implements MouseListener{
 
 	private int[][] A;
 	private int colorMode;
 	private ArrayList<Integer>labels;
 	private Color[] colors = new Color[10];
-	public MyJPanel() {
+	private UserInterface registeredUI;
+	
+	private ObjectDetails clickedObject;
+	
+	public MyJPanel(UserInterface ui) {
+		registeredUI = ui;
 		labels = new ArrayList<Integer>();
+		addMouseListener(this);
 	}
 	
 	public void setA(int[][]A) {
@@ -85,6 +96,50 @@ public class MyJPanel extends JPanel{
 					g.drawLine(i, j, i, j);
 				}
 			}
+			if (clickedObject != null) {
+				g.setColor(Color.BLACK);
+				g.drawRect(clickedObject.getOrigin().x, clickedObject.getOrigin().y, clickedObject.getPixelMap()[0].length-2, clickedObject.getPixelMap().length-2);
+			}
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		ObjectDetails[] list;
+		list = registeredUI.getObjectDetails();
+		Point clickedP = e.getPoint();
+		for (int i = 0; i < list.length; i++) {
+			if ( (clickedP.x > list[i].getOrigin().x) && (clickedP.x < list[i].getOrigin().x + list[i].getPixelMap()[0].length - 1 ))
+				if ( (clickedP.y > list[i].getOrigin().y) && (clickedP.y < list[i].getOrigin().y + list[i].getPixelMap().length - 1)) {
+					clickedObject = list[i];
+					System.out.println(clickedObject.toString());
+					this.repaint();
+					break;
+				}
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

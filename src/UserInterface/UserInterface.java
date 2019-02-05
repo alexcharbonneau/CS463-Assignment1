@@ -463,6 +463,7 @@ public class UserInterface {
 		return convertedMatrix;
 	}
 	
+	//will recalculate the labels and the groups
 	private void updateChanges() {
 
 		connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
@@ -481,11 +482,15 @@ public class UserInterface {
 		if (drawingBoard != null) {
 			mainPanel.remove(drawingBoard);
 		}
-		drawingBoard = new MyJPanel();
+		drawingBoard = new MyJPanel(this);
 		mainPanel.add(drawingBoard, BorderLayout.CENTER);
 		drawingBoard.setA(A);
 		drawingBoard.setMode(mode);
 		mainWindow.repaint();
 		mainWindow.pack();
+	}
+	
+	public ObjectDetails[] getObjectDetails() {
+		return objectList;
 	}
 }
