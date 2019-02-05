@@ -98,7 +98,9 @@ public class UserInterface {
 		JButtonOriginal = new JButton("Original");
 		JButtonOriginal.setEnabled(false);
 		JButtonBinary = new JButton("Binary");
+		JButtonBinary.setEnabled(false);
 		JButtonLabels = new JButton("Labels");
+		JButtonLabels.setEnabled(false);
 		JButtonGroup = new JButton("Group");
 		JButtonGroup.setEnabled(false);
 		JButtonReport = new JButton("Report");
@@ -311,17 +313,15 @@ public class UserInterface {
 						JButtonErode1.setEnabled(true);
 						JButtonErode2.setEnabled(true);
 						JButtonDilate.setEnabled(true);
+						JButtonOriginal.setEnabled(false);
+						JButtonGroup.setEnabled(true);
+						JButtonLabels.setEnabled(true);
+						JButtonBinary.setEnabled(true);
 					}
 					else {
+						imageFile = null;
 						JLinstructions.setText("File not found");
 					}
-					JButtonOriginal.setEnabled(false);
-					JButtonGroup.setEnabled(true);
-					JButtonLabels.setEnabled(true);
-					JButtonBinary.setEnabled(true);
-					JButtonDilate.setEnabled(true);
-					JButtonErode1.setEnabled(true);
-					JButtonErode2.setEnabled(true);
 				}
 			}
 			
