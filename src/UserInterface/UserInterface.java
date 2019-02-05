@@ -185,7 +185,7 @@ public class UserInterface {
 						connectedMatrix[i][j] = filteredMatrix[i][j];
 					}
 				}
-				connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+				updateChanges();
 				if (toDisplay == ColorMode.BINARY)
 					displayMatrix(filteredMatrix, toDisplay);
 				if (toDisplay == ColorMode.LABELS)
@@ -201,13 +201,13 @@ public class UserInterface {
 			public void actionPerformed(ActionEvent e) {
 
 				filteredMatrix = NoiseFilter.erode2(filteredMatrix);
-
+			
 				for (int i = 0; i < filteredMatrix.length; i++) {
 					for (int j = 0; j < filteredMatrix[0].length; j++) {
 						connectedMatrix[i][j] = filteredMatrix[i][j];
 					}
 				}
-				connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+				updateChanges();
 				if (toDisplay == ColorMode.BINARY)
 					displayMatrix(filteredMatrix, toDisplay);
 				if (toDisplay == ColorMode.LABELS)
@@ -230,7 +230,7 @@ public class UserInterface {
 						connectedMatrix[i][j] = filteredMatrix[i][j];
 					}
 				}
-				connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+				updateChanges();
 				if (toDisplay == ColorMode.BINARY)
 					displayMatrix(filteredMatrix, toDisplay);
 				if (toDisplay == ColorMode.LABELS)
@@ -434,6 +434,7 @@ public class UserInterface {
 		Threshold t = new Threshold();
 		JSThreshold.setValue(t.automaticThreshold(binaryMatrix));
 		
+		//copying binarymatrix from original
 		for (int i = 0; i < convertedMatrix.length; i++) {
 			for (int j = 0; j < convertedMatrix[0].length; j++) {
 				binaryMatrix[i][j] = convertedMatrix[i][j];
@@ -443,24 +444,18 @@ public class UserInterface {
 		JLgrayScaleThreshold.setText("Threshold Value: " + JSThreshold.getValue());
 		binaryMatrix = Threshold.PGMThreshold(binaryMatrix, JSThreshold.getValue());
 		
+		//resetting the other matrixes as well
 		for (int i = 0; i < binaryMatrix.length; i++) {
 			for (int j = 0; j < binaryMatrix[0].length; j++) {
 				connectedMatrix[i][j] = binaryMatrix[i][j];
 				filteredMatrix[i][j] = binaryMatrix[i][j];
 			}
 		}
-		connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
-		SignificantObjects s = new SignificantObjects();
-		objectList = s.getObjects(connectedMatrix);
+		
+		updateChanges();
+		
 		if (objectList.length > 0)
 			JButtonReport.setEnabled(true);
-		
-		for (int i = 0; i < objectList.length; i++) {
-			objectList[i].setSecondMomentsCol(ImageFeatures.SecondMomentC(objectList[i].getPixelMap(), objectList[i].getArea(), ImageFeatures.c(objectList[i].getPixelMap(), objectList[i].getArea())));
-			objectList[i].setSecondMomentsRow(ImageFeatures.SecondMomentR(objectList[i].getPixelMap(), objectList[i].getArea(), ImageFeatures.r(objectList[i].getPixelMap(), objectList[i].getArea())));
-			objectList[i].setSecondMomentsMixed(ImageFeatures.SecondMomentRC(objectList[i].getPixelMap(), objectList[i].getArea(), objectList[i].getSecondMomentsRow(), objectList[i].getSecondMomentsCol()));
-			//objectList[i].setCircularity(ImageFeatures.circularity(ImageFeatures.n4PerimeterLength(objectList[i].getPixelMap()),objectList[i].getArea()));
-		}
 		
 		
 		mainWindow.pack();
@@ -468,6 +463,19 @@ public class UserInterface {
 		return convertedMatrix;
 	}
 	
+	private void updateChanges() {
+
+		connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+		SignificantObjects s = new SignificantObjects();
+		objectList = s.getObjects(connectedMatrix);
+		
+		for (int i = 0; i < objectList.length; i++) {
+			objectList[i].setSecondMomentsCol(ImageFeatures.SecondMomentC(objectList[i].getPixelMap(), objectList[i].getArea(), ImageFeatures.c(objectList[i].getPixelMap(), objectList[i].getArea())));
+			objectList[i].setSecondMomentsRow(ImageFeatures.SecondMomentR(objectList[i].getPixelMap(), objectList[i].getArea(), ImageFeatures.r(objectList[i].getPixelMap(), objectList[i].getArea())));
+			objectList[i].setSecondMomentsMixed(ImageFeatures.SecondMomentRC(objectList[i].getPixelMap(), objectList[i].getArea(), objectList[i].getSecondMomentsRow(), objectList[i].getSecondMomentsCol()));
+			//objectList[i].setCircularity(ImageFeatures.circularity(ImageFeatures.n4PerimeterLength(objectList[i].getPixelMap()),objectList[i].getArea()));
+		}
+	}
 	
 	public void displayMatrix(int[][]A, ColorMode mode) {
 		if (drawingBoard != null) {
