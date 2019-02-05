@@ -20,6 +20,15 @@ public class ObjectDetails {
 	private double secondMomentRow;
 	private double secondMomentCol;
 	private double secondMomentMixed;
+	private int group;
+	
+	public int getGroup() {
+		return group;
+	}
+	
+	public void setGroup(int g) {
+		group = g;
+	}
 	
 	public ObjectDetails(Point p, int[][] pixels) {
 

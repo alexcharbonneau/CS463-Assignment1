@@ -54,8 +54,7 @@ public class ObjectLabelling {
 	    }
 	    numObjects = (iCorners-eCorners)/4;
 	    
-//	    System.out.println(eCorners);
-//	    System.out.println(iCorners);
+
 //	    System.out.println("Number of objects = " + numObjects);
 
 	    //turning 1's in the array into -1's

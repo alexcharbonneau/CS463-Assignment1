@@ -238,7 +238,9 @@ public class ImageFeatures {
 		}
 				
 		
-		
+		/*
+		 * Second moment function to find second-order row moment
+		 */
 		public static double SecondMomentR(int[][]binaryImageAreaCentroid, int area, double r) {
 			double secondMomentRow = 0;
 			int rowCount = 0;
@@ -262,7 +264,9 @@ public class ImageFeatures {
 			return secondMomentRow;
 		}
 		
-		
+		/*
+		 * Second moment function to find second-order column moment
+		 */
 		public static double SecondMomentC(int[][]binaryImageAreaCentroid, int area, double c) {
 			double secondMomentCol = 0;
 			int colCount = 0;
@@ -282,10 +286,13 @@ public class ImageFeatures {
 				}
 			}
 			secondMomentCol = (((double)1/area)*sumC);
-//			System.out.println(secondMomentCol);
+	//		System.out.println(secondMomentCol);
 			return secondMomentCol;
 		}
 		
+		/*
+		 * Second moment function to find second-order mixed moment
+		 */
 		public static double SecondMomentRC(int[][]binaryImageAreaCentroid, int area, double r, double c) {
 			double secondMomentMix = 0;
 			double sumRC = 0;
@@ -300,7 +307,7 @@ public class ImageFeatures {
 			}
 			
 			secondMomentMix = (sumRC/area);
-			System.out.println(secondMomentMix);
+	//		System.out.println(secondMomentMix);
 			return secondMomentMix;
 			
 		}
