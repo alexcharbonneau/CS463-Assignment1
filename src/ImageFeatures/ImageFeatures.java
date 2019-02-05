@@ -289,8 +289,6 @@ public class ImageFeatures {
 		public static double SecondMomentRC(int[][]binaryImageAreaCentroid, int area, double r, double c) {
 			double secondMomentMix = 0;
 			double sumRC = 0;
-			r = 3.1;
-			c = 3.7;
 			
 			for(int i=0; i<binaryImageAreaCentroid.length; i++) {
 				for (int j=0; j<binaryImageAreaCentroid[0].length; j++) {
