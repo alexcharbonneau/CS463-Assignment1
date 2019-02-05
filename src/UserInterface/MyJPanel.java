@@ -101,6 +101,17 @@ public class MyJPanel extends JPanel implements MouseListener{
 				g.drawRect(clickedObject.getOrigin().x, clickedObject.getOrigin().y, clickedObject.getPixelMap()[0].length-2, clickedObject.getPixelMap().length-2);
 			}
 		}
+		else if (colorMode == 4) {	//groups
+			for (int i = 0; i < A[0].length; i++) {
+				for (int j = 0; j < A.length; j++) {
+					if (A[j][i] == 0)
+						g.setColor(Color.WHITE);
+					else
+						g.setColor(colors[labels.indexOf(A[j][i]) % 8]);
+					g.drawLine(i, j, i, j);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -111,10 +122,12 @@ public class MyJPanel extends JPanel implements MouseListener{
 		for (int i = 0; i < list.length; i++) {
 			if ( (clickedP.x > list[i].getOrigin().x) && (clickedP.x < list[i].getOrigin().x + list[i].getPixelMap()[0].length - 1 ))
 				if ( (clickedP.y > list[i].getOrigin().y) && (clickedP.y < list[i].getOrigin().y + list[i].getPixelMap().length - 1)) {
-					clickedObject = list[i];
-					System.out.println(clickedObject.toString());
-					this.repaint();
-					break;
+					if (list[i].getPixelMap()[clickedP.y - list[i].getOrigin().y][clickedP.x - list[i].getOrigin().x] != 0) {
+						clickedObject = list[i];
+						System.out.println(clickedObject.toString());
+						this.repaint();
+						break;
+					}
 				}
 		}
 	}
