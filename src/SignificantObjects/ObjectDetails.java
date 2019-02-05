@@ -97,8 +97,8 @@ public class ObjectDetails {
 	
 	@Override
 	public String toString() {
-		return ("Object: "+ ((Object)this).hashCode()
-				+ "Bounding Box" + this.boundingBoxRows + " Rows, " + this.boundingBoxCols + " Columns.\n"
+		return ("Object: "+ ((Object)this).hashCode() + "\n"
+				+ "Bounding Box: " + this.boundingBoxRows + " Rows, " + this.boundingBoxCols + " Columns.\n"
 				+ "Area: " + this.area + " pixels.\n"
 				+ "Perimeter: " + this.perimeter + " pixels.\n"
 				+ "Circularity: " + this.circularity + "\n"

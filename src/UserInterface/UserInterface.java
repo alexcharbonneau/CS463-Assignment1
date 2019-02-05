@@ -3,6 +3,8 @@
  **/
 
 package UserInterface;
+import static java.nio.file.StandardOpenOption.CREATE;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -10,8 +12,14 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Hashtable;
 import java.util.Scanner;
 
@@ -25,7 +33,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ImageFeatures.ImageFeatures;
 import NoiseFilter.NoiseFilter;
 import ObjectLabelling.ObjectLabelling;
 import SignificantObjects.ObjectDetails;
@@ -79,7 +86,8 @@ public class UserInterface {
 		
 		filename = new String();
 		fileInputField = new JTextField(40);
-		fileInputField.setText("src\\Resources\\Images\\image3.pgm");
+		fileInputField.setText("src\\Resources\\Images\\image1.pgm");
+		
 		
 		submit = new JButton("OK");
 		submit.setPreferredSize(new Dimension(60, 30));
@@ -93,6 +101,7 @@ public class UserInterface {
 		JButtonGroup = new JButton("Group");
 		JButtonGroup.setEnabled(false);
 		JButtonReport = new JButton("Report");
+		JButtonReport.setEnabled(false);
 		
 		JLgrayScaleThreshold = new JLabel("Threshold Value: ");
 		JLgrayScaleThreshold.setHorizontalAlignment(SwingConstants.CENTER);
@@ -269,6 +278,17 @@ public class UserInterface {
 			}
 		});
 		
+		JButtonReport.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Number of objects: " + objectList.length + "\n");
+				for (int i = 0; i < objectList.length; i++) {
+					System.out.println(objectList[i].toString());
+				}
+				
+			}
+		});
 		
 		submit.addActionListener(new ActionListener() {
 			@Override
@@ -395,7 +415,8 @@ public class UserInterface {
 					}
 				}
 			}
-			
+			mainWindow.setMinimumSize(new Dimension (700, 700));
+			mainWindow.setMaximumSize(new Dimension(screensize.width - 50, screensize.height - 50));
 			mainWindow.setPreferredSize(new Dimension(convertedMatrix[0].length + 100 + buttonArea.getSize().width, screensize.height - 100));
 			scanner.close();
 		} catch (FileNotFoundException e) {
@@ -430,21 +451,19 @@ public class UserInterface {
 		connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
 		SignificantObjects s = new SignificantObjects();
 		objectList = s.getObjects(connectedMatrix);
+		if (objectList.length > 0)
+			JButtonReport.setEnabled(true);
 		/*
 		for (int i = 0; i < objectList.length; i++) {
 			objectList[i].setCircularity(ImageFeatures.circularity(ImageFeatures.n4PerimeterLength(objectList[i].getPixelMap()),objectList[i].getArea()));
 		}
 		*/
+		
+		mainWindow.pack();
 		displayMatrix(convertedMatrix, toDisplay);
 		return convertedMatrix;
 	}
 	
-	/*
-	 * 2 color modes supported right now: binary and grayscale256
-	 * binary image must use colorMode parameter: 1
-	 * 		any non zero int found will be colored black, the rest will be white
-	 * grayscale will shade the image with the appropriate grey ranging from 0-255 from the int found in the matrix
-	 * */
 	
 	public void displayMatrix(int[][]A, ColorMode mode) {
 		if (drawingBoard != null) {
