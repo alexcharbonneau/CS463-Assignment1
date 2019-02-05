@@ -1,6 +1,6 @@
 package ImageFeatures;
 
-
+import java.util.ArrayList;
 
 public class ImageFeatures {
 	
@@ -236,24 +236,97 @@ public class ImageFeatures {
 		public static double circularity(double perimeter, int area) {
 			return Math.pow(perimeter,2) / area;
 		}
-				  
+				
+		
+		
+		public static double SecondMomentR(int[][]binaryImageAreaCentroid, int area, double r) {
+			double secondMomentRow = 0;
+			int rowCount = 0;
+			double sumR = 0;
+			
+			
+			for(int i=0; i<binaryImageAreaCentroid.length; i++) {
+				for (int j=0; j<binaryImageAreaCentroid[0].length; j++) {
+			 		if (binaryImageAreaCentroid[i][j]!= 0) {
+			 			rowCount+= 1;
+			 		}
+			
+				}
+				if(rowCount!=0) {
+					sumR += (Math.pow((i)-r,2))*rowCount;
+					rowCount=0;
+				}
+			}
+			secondMomentRow = (((double)1/area)*sumR);
+//			System.out.println(secondMomentRow);
+			return secondMomentRow;
+		}
+		
+		
+		public static double SecondMomentC(int[][]binaryImageAreaCentroid, int area, double c) {
+			double secondMomentCol = 0;
+			int colCount = 0;
+			double sumC = 0;
+			
+			
+			for(int i=0; i<binaryImageAreaCentroid[0].length; i++) {
+				for (int j=0; j<binaryImageAreaCentroid.length; j++) {
+			 		if (binaryImageAreaCentroid[j][i]!= 0) {
+			 			colCount+= 1;
+			 		}
+			
+				}
+				if(colCount!=0) {
+					sumC += Math.pow((i)-c,2)*colCount;
+					colCount=0;
+				}
+			}
+			secondMomentCol = (((double)1/area)*sumC);
+//			System.out.println(secondMomentCol);
+			return secondMomentCol;
+		}
+		
+		public static double SecondMomentRC(int[][]binaryImageAreaCentroid, int area, double r, double c) {
+			double secondMomentMix = 0;
+			double sumRC = 0;
+			r = 3.1;
+			c = 3.7;
+			
+			for(int i=0; i<binaryImageAreaCentroid.length; i++) {
+				for (int j=0; j<binaryImageAreaCentroid[0].length; j++) {
+			 		if (binaryImageAreaCentroid[i][j]!= 0) {
+			 			sumRC += ((i-r)*(j-c));
+
+			 		}
+				}
+			}
+			
+			secondMomentMix = (sumRC/area);
+			System.out.println(secondMomentMix);
+			return secondMomentMix;
+			
+		}
+		
 	
 		public static void main (String[] args) {
 			int[][] arrayTest = {
-					{0,0,0,0,0,0,0,0,0,0},
-					{0,0,0,0,1,1,0,0,0,0},
-					{0,0,0,0,1,1,1,1,1,0},
-					{0,0,1,1,1,1,1,1,1,0},
-					{0,1,1,1,1,1,1,0,0,0},
-					{0,0,0,0,1,1,0,0,0,0},
-					{0,0,0,0,0,1,0,0,0,0},
-					{0,0,0,0,0,0,0,0,0,0}
+					{0,0,0,0,0,0,0,0},
+					{0,0,0,1,1,0,0,0},
+					{0,0,0,1,1,1,1,1},
+					{0,1,1,1,1,1,1,1},
+					{1,1,1,1,1,1,0,0},
+					{0,0,0,1,1,0,0,0},
+					{0,0,0,0,1,0,0,0},
+					{0,0,0,0,0,0,0,0}
 					};
 					
 					
 					
-			System.out.println(n4PerimeterLength(arrayTest));
-			
+//			System.out.println(n4PerimeterLength(arrayTest));
+//			SecondMomentR(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)));
+//			SecondMomentC(arrayTest,area(arrayTest),c(arrayTest, area(arrayTest)));
+//			SecondMomentRC(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)),c(arrayTest, area(arrayTest)));
+
 		} 		 
 				
 	}

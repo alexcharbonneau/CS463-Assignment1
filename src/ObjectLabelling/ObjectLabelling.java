@@ -79,7 +79,7 @@ public class ObjectLabelling {
 	    
 	}
 	
-	public static void FindComponents(int[][]x, int labelCount) {
+	public static void FindComponents(int[][]x, int labelCount) { //finding pixels that arent 0's
 		for(int i=0; i<x.length; i++) {
 			for(int j=0;j<x[0].length; j++) {
 				if(x[i][j]==-1) {
@@ -94,7 +94,7 @@ public class ObjectLabelling {
 		}
 	}
 	
-	public static void ConnectedComponents(int[][]x, int i, int j) {
+	public static void ConnectedComponents(int[][]x, int i, int j) { //turning right neighbor & top neighbor into connected component
 		if(j<x[0].length-1) {
 			if(x[i][j+1]==-1) {
 				x[i][j+1] = x[i][j];
@@ -141,7 +141,7 @@ public class ObjectLabelling {
 		}
 	}
 	
-	public static void UnionFind8n(int[][]x) {
+	public static void UnionFind8n(int[][]x) { //finding all other neighbors
 		for(int i=0; i<x.length; i++) {
 			for(int j=0;j<x[0].length; j++) {
 				if(x[i][j]!=0) {
@@ -227,7 +227,7 @@ public class ObjectLabelling {
 	
 
 	
-	public static void reLabel(int[][]x, int lower, int higher) {
+	public static void reLabel(int[][]x, int lower, int higher) { //relabelling to have same label for a connected component
 		for(int i=0; i<x.length; i++) {
 			for(int j=0;j<x[0].length; j++) {
 				if(x[i][j]==higher) {
@@ -239,7 +239,7 @@ public class ObjectLabelling {
 	
 	
 	
-	public static void CountLabels(int[][]x) {
+	public static void CountLabels(int[][]x) { //counting the number of labels
 		int count =0;
 		for (int labelNum=1; labelNum<500; labelNum++) {
 			for (int i=0; i<x.length; i++){
@@ -252,10 +252,10 @@ public class ObjectLabelling {
 			}
 		}
 
-		System.out.print("Number of different objects = " + count);
+//		System.out.print("Number of different objects = " + count);
 	}
 	
-	public static void CorrectLabels(int[][]m) {
+	public static void CorrectLabels(int[][]m) { //correcting the labels to have numbers from 1 to n
 		ArrayList<Integer> numbers = new ArrayList<Integer>();
 		int label = 1;
 		for (int i=0; i<m.length;i++) {
@@ -305,7 +305,7 @@ public class ObjectLabelling {
 
 
     
-    public static void PrintArray(int[][]m) {
+    public static void PrintArray(int[][]m) { //print the array
     	for(int i=0; i<m.length; i++) {
 	    	for(int j=0; j<m[0].length; j++) {
 	    		System.out.print(m[i][j] + " ");
