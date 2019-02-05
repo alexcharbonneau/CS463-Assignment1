@@ -33,6 +33,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ImageFeatures.ImageFeatures;
 import NoiseFilter.NoiseFilter;
 import ObjectLabelling.ObjectLabelling;
 import SignificantObjects.ObjectDetails;
@@ -453,11 +454,14 @@ public class UserInterface {
 		objectList = s.getObjects(connectedMatrix);
 		if (objectList.length > 0)
 			JButtonReport.setEnabled(true);
-		/*
+		
 		for (int i = 0; i < objectList.length; i++) {
-			objectList[i].setCircularity(ImageFeatures.circularity(ImageFeatures.n4PerimeterLength(objectList[i].getPixelMap()),objectList[i].getArea()));
+			objectList[i].setSecondMomentsCol(ImageFeatures.SecondMomentC(objectList[i].getPixelMap(), objectList[i].getArea(), ImageFeatures.c(objectList[i].getPixelMap(), objectList[i].getArea())));
+			objectList[i].setSecondMomentsRow(ImageFeatures.SecondMomentR(objectList[i].getPixelMap(), objectList[i].getArea(), ImageFeatures.r(objectList[i].getPixelMap(), objectList[i].getArea())));
+			objectList[i].setSecondMomentsMixed(ImageFeatures.SecondMomentRC(objectList[i].getPixelMap(), objectList[i].getArea(), objectList[i].getSecondMomentsRow(), objectList[i].getSecondMomentsCol()));
+			//objectList[i].setCircularity(ImageFeatures.circularity(ImageFeatures.n4PerimeterLength(objectList[i].getPixelMap()),objectList[i].getArea()));
 		}
-		*/
+		
 		
 		mainWindow.pack();
 		displayMatrix(convertedMatrix, toDisplay);
