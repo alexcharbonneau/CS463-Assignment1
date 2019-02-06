@@ -4,25 +4,30 @@ import SignificantObjects.ObjectDetails;
 
 public class ObjectGrouping {
 
-	public static ObjectDetails[] GroupObjects(ObjectDetails[] toBeGrouped){
-		int count = 0;
-		//method does not work, needs to be worked on
-		for (int i=1; i<toBeGrouped.length; i++) {
-			if (toBeGrouped[count].getGroup() == 0) {
-				if(	(toBeGrouped[count].getArea() < toBeGrouped[i].getArea()+(toBeGrouped[i].getArea()*0.05)
-					|| toBeGrouped[count].getArea() > toBeGrouped[i].getArea()-(toBeGrouped[i].getArea()*0.05))
-					&&(toBeGrouped[count].getSecondMomentsMixed() < toBeGrouped[i].getSecondMomentsMixed()+(toBeGrouped[i].getSecondMomentsMixed()*0.05))
-					||	(toBeGrouped[count].getSecondMomentsMixed()> toBeGrouped[i].getSecondMomentsMixed()+(toBeGrouped[i].getSecondMomentsMixed()*0.05))
-				){
-					//group object[count] & object[i] together
-				}
-				
+	public static double upperlimit = 1.08;
+	public static double lowerlimit = 0.92;
+	
+	
+	public static void GroupObjects(ObjectDetails[] toBeGrouped){
+		int count = 1;
+		double secondcoef = 0;
+		double areacoef = 0;
+		for (int i = 0; i < toBeGrouped.length; i++) {
+			if (toBeGrouped[i].getGroup() == 0) {
+				toBeGrouped[i].setGroup(count);
 			}
-			
+			for (int j = 0; j < toBeGrouped.length; j++) {
+				if (toBeGrouped[j].getGroup() == 0) {
+					secondcoef = toBeGrouped[i].getSecondMomentsMixed() / toBeGrouped[j].getSecondMomentsMixed();
+					areacoef = ((double)toBeGrouped[i].getArea()) / ((double)toBeGrouped[j].getArea());
+					if (secondcoef < upperlimit && secondcoef > lowerlimit) {
+						if (areacoef < upperlimit && areacoef > lowerlimit) {
+							toBeGrouped[j].setGroup(count);
+						}
+					}
+				}
+			}
+			count++;
 		}	
-		
-		
-		
-		return null;
 	}
 }

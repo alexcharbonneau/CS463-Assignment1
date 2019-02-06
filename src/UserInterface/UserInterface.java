@@ -35,6 +35,7 @@ import javax.swing.event.ChangeListener;
 
 import ImageFeatures.ImageFeatures;
 import NoiseFilter.NoiseFilter;
+import ObjectGrouping.ObjectGrouping;
 import ObjectLabelling.ObjectLabelling;
 import SignificantObjects.ObjectDetails;
 import SignificantObjects.SignificantObjects;
@@ -500,6 +501,7 @@ public class UserInterface {
 			objectList[i].setSecondMomentsMixed(ImageFeatures.SecondMomentRC(objectList[i].getPixelMap(), objectList[i].getArea(), objectList[i].getSecondMomentsRow(), objectList[i].getSecondMomentsCol()));
 			//objectList[i].setCircularity(ImageFeatures.circularity(ImageFeatures.n4PerimeterLength(objectList[i].getPixelMap()),objectList[i].getArea()));
 		}
+		ObjectGrouping.GroupObjects(objectList);
 	}
 	
 	public void displayMatrix(int[][]A, ColorMode mode) {
