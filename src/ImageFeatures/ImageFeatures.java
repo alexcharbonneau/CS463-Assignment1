@@ -1,5 +1,5 @@
 package ImageFeatures;
-import org.opencv.imgproc.Imgproc;
+
 
 import java.util.ArrayList;
 
@@ -409,20 +409,19 @@ public class ImageFeatures {
 					{0,0,0,0,0,0,0,0,0,0}
 					};
 					
-					
-<<<<<<< HEAD
+
 					
 			System.out.println(n4PerimeterLength(arrayTest));
 		SecondMomentR(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)));
 		SecondMomentC(arrayTest,area(arrayTest),c(arrayTest, area(arrayTest)));
 		SecondMomentRC(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)),c(arrayTest, area(arrayTest)));
-=======
+
 					System.out.println(getPerimeter(arrayTest));
 //			System.out.println(n4PerimeterLength(arrayTest));
 //			SecondMomentR(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)));
 //			SecondMomentC(arrayTest,area(arrayTest),c(arrayTest, area(arrayTest)));
 //			SecondMomentRC(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)),c(arrayTest, area(arrayTest)));
->>>>>>> branch 'master' of https://github.com/alexcharbonneau/CS463-Assignment1.git
+
 
 		} 		 
 				

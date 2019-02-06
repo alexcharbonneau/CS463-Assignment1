@@ -5,7 +5,7 @@ import SignificantObjects.ObjectDetails;
 public class ObjectGrouping {
 
 	public static double upperlimit = 1.1;
-	public static double lowerlimit = 0.9;
+	public static double lowerlimit = 0.82;
 	
 	
 	public static void GroupObjects(ObjectDetails[] toBeGrouped){
