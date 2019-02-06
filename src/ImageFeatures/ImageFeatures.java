@@ -165,6 +165,66 @@ public class ImageFeatures {
 			 * @return
 			 * @description calculates the perimeter length N4 with connectivity-8
 			 */
+			
+			public static double getPerimeter(int[][] pixelmap) {
+				double perimeter = 0;
+				int foundbounds = 0;
+				for (int i = 1; i < pixelmap.length - 1; i++) {
+					for (int j = 1; j < pixelmap[0].length - 1; j++) {
+						if (pixelmap[i][j] != 0 && isBorderPixelN4(i, j, pixelmap)) {
+							foundbounds++;
+							Boolean found = false;
+							if (pixelmap[i + 1][j] == 0 && found == false) {
+								if (pixelmap[i + 1][j + 1] != 0) {
+									perimeter+=Math.sqrt(2) / 2;
+									found = true;
+								}
+								else {
+									perimeter += 0.5;
+									found = true;
+								}
+							}
+							
+							if (pixelmap[i][j + 1] == 0&& found == false) {
+								if (pixelmap[i + 1][j + 1] != 0) {
+									perimeter+=Math.sqrt(2) / 2;
+									found = true;
+								}
+								else {
+									perimeter += 0.5;
+									found = true;
+								}
+							}
+							
+							if (pixelmap[i][j - 1] == 0&& found == false) {
+								if (pixelmap[i-1][j+1] != 0) {
+									perimeter+=Math.sqrt(2) / 2;
+									found = true;
+								}
+							}
+							else {
+								perimeter += 0.5;
+								found = true;
+							}
+							
+							if (pixelmap[i - 1][j - 1] == 0&& found == false) {
+								if (pixelmap[i][j+1] != 0) {
+									perimeter+=Math.sqrt(2) / 2;
+									found = true;
+								}
+							}
+							else {
+								perimeter += 0.5;
+								found = true;
+							}
+						}
+					}
+				}
+				//System.out.println("foundbounds: " + foundbounds);
+				return perimeter;	
+			}
+			
+			
 			public static double n4PerimeterLength(int[][] binaryObjectArray) {
 				
 				int firstPixelRow = 0;
@@ -339,22 +399,30 @@ public class ImageFeatures {
 	
 		public static void main (String[] args) {
 			int[][] arrayTest = {
-					{0,0,0,0,0,0,0,0},
-					{0,0,0,1,1,0,0,0},
-					{0,0,0,1,1,1,1,1},
-					{0,1,1,1,1,1,1,1},
-					{1,1,1,1,1,1,0,0},
-					{0,0,0,1,1,0,0,0},
-					{0,0,0,0,1,0,0,0},
-					{0,0,0,0,0,0,0,0}
+					{0,0,0,0,0,0,0,0,0,0},
+					{0,0,0,0,1,1,0,0,0,0},
+					{0,0,0,0,1,1,1,1,1,0},
+					{0,0,1,1,1,1,1,1,1,0},
+					{0,1,1,1,1,1,1,0,0,0},
+					{0,0,0,0,1,1,0,0,0,0},
+					{0,0,0,0,0,1,0,0,0,0},
+					{0,0,0,0,0,0,0,0,0,0}
 					};
 					
 					
+<<<<<<< HEAD
 					
 			System.out.println(n4PerimeterLength(arrayTest));
 		SecondMomentR(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)));
 		SecondMomentC(arrayTest,area(arrayTest),c(arrayTest, area(arrayTest)));
 		SecondMomentRC(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)),c(arrayTest, area(arrayTest)));
+=======
+					System.out.println(getPerimeter(arrayTest));
+//			System.out.println(n4PerimeterLength(arrayTest));
+//			SecondMomentR(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)));
+//			SecondMomentC(arrayTest,area(arrayTest),c(arrayTest, area(arrayTest)));
+//			SecondMomentRC(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)),c(arrayTest, area(arrayTest)));
+>>>>>>> branch 'master' of https://github.com/alexcharbonneau/CS463-Assignment1.git
 
 		} 		 
 				
