@@ -502,6 +502,8 @@ public class UserInterface {
 			objectList[i].setSecondMomentsCol(ImageFeatures.SecondMomentC(objectList[i].getPixelMap(), objectList[i].getArea(), ImageFeatures.c(objectList[i].getPixelMap(), objectList[i].getArea())));
 			objectList[i].setSecondMomentsRow(ImageFeatures.SecondMomentR(objectList[i].getPixelMap(), objectList[i].getArea(), ImageFeatures.r(objectList[i].getPixelMap(), objectList[i].getArea())));
 			objectList[i].setSecondMomentsMixed(ImageFeatures.SecondMomentRC(objectList[i].getPixelMap(), objectList[i].getArea(), objectList[i].getSecondMomentsRow(), objectList[i].getSecondMomentsCol()));
+			objectList[i].setPerimeter(ImageFeatures.getPerimeter(objectList[i].getPixelMap()));
+			objectList[i].setCircularity(ImageFeatures.circularity(objectList[i].getPerimeter(), objectList[i].getArea()));
 			//objectList[i].setCircularity(ImageFeatures.circularity(ImageFeatures.n4PerimeterLength(objectList[i].getPixelMap()),objectList[i].getArea()));
 		}
 		ObjectGrouping.GroupObjects(objectList);

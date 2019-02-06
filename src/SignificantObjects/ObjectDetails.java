@@ -16,7 +16,7 @@ public class ObjectDetails {
 	private int boundingBoxRows;	//the number of rows to the bounding boxes
 	private int boundingBoxCols;	//the number of columns to the bounding boxes
 	private int area;				//how many pixels are in the object
-	private int perimeter;			//how many pixels on the outer layer of the object
+	private double perimeter;			//how many pixels on the outer layer of the object
 	private double secondMomentRow;
 	private double secondMomentCol;
 	private double secondMomentMixed;
@@ -62,11 +62,11 @@ public class ObjectDetails {
 		return area;
 	}
 	
-	public void setPerimeter(int p) {
+	public void setPerimeter(double p) {
 		perimeter = p;
 	}
 	
-	public int getPerimeter() {
+	public double getPerimeter() {
 		return perimeter;
 	}
 	
@@ -109,7 +109,7 @@ public class ObjectDetails {
 		return ("Object: "+ ((Object)this).hashCode() + "\n"
 				+ "Bounding Box: " + this.boundingBoxRows + " Rows, " + this.boundingBoxCols + " Columns.\n"
 				+ "Area: " + this.area + " pixels.\n"
-				+ "Perimeter: " + this.perimeter + " pixels.\n"
+				+ "Perimeter: " + this.perimeter + "\n"
 				+ "Circularity: " + this.circularity + "\n"
 				+ "Second Moments Mixed: " + this.secondMomentMixed + "\n"
 				+ "Group number: " + group + "\n");
