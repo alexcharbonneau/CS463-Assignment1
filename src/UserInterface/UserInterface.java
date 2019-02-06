@@ -369,8 +369,11 @@ public class UserInterface {
 							filteredMatrix[i][j] = binaryMatrix[i][j];
 						}
 					}
-					connectedMatrix = ObjectLabelling.countGroups(connectedMatrix);
+					
+					updateChanges();
 					if (toDisplay == ColorMode.LABELS)
+						displayMatrix(connectedMatrix, toDisplay);
+					if (toDisplay == ColorMode.GROUPS)
 						displayMatrix(connectedMatrix, toDisplay);
 					erode1count = 0;
 					erode2count = 0;
