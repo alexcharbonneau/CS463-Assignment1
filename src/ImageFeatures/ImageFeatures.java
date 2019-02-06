@@ -1,4 +1,5 @@
 package ImageFeatures;
+import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 
@@ -22,12 +23,20 @@ public class ImageFeatures {
 				 		if (binaryImageAreaCentroid[i][j] == 1) {
 				 			area ++;
 				 		}
-	
+				 		
+
 
 }
 }       return area;
 		 
 	}
+	
+	
+	
+	
+	//Imgproc.arcLength(curve, closed)
+	
+	
 	
 	
 	public static double r(int[][] binaryImageAreaCentroid, double objArea) {   //centroid (r,_)
@@ -78,6 +87,8 @@ public class ImageFeatures {
 			
 	}
 			
+	
+	
 			public static double c(int[][] binaryImageAreaCentroid, double objArea) {    //centroid (_,c)
 				
 				int rows = 0;
@@ -120,6 +131,19 @@ public class ImageFeatures {
 	 	
 	 	 
 	 		 
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 		
 			}
 			
@@ -327,10 +351,10 @@ public class ImageFeatures {
 					
 					
 					
-//			System.out.println(n4PerimeterLength(arrayTest));
-//			SecondMomentR(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)));
-//			SecondMomentC(arrayTest,area(arrayTest),c(arrayTest, area(arrayTest)));
-//			SecondMomentRC(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)),c(arrayTest, area(arrayTest)));
+			System.out.println(n4PerimeterLength(arrayTest));
+		SecondMomentR(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)));
+		SecondMomentC(arrayTest,area(arrayTest),c(arrayTest, area(arrayTest)));
+		SecondMomentRC(arrayTest,area(arrayTest),r(arrayTest, area(arrayTest)),c(arrayTest, area(arrayTest)));
 
 		} 		 
 				
